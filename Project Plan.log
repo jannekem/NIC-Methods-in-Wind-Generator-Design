@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.17)  25 JAN 2014 11:27
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.17)  25 JAN 2014 14:28
 entering extended mode
 **Project*Plan.tex
 ("I:\ohjelmointi\GitHub\GA-DA-octo-adventure\Project Plan.tex"
@@ -524,23 +524,23 @@ Package microtype Info: Character `029' is missing
 
 ]
 LaTeX Font Info:    Font shape `T1/pplx/bx/n' in size <9> not available
-(Font)              Font shape `T1/pplx/b/n' tried instead on input line 136.
- [2]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 190.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 190.
+(Font)              Font shape `T1/pplx/b/n' tried instead on input line 137.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 189.
+ [2] [3]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 189.
 
 ("I:\ohjelmointi\GitHub\GA-DA-octo-adventure\Project Plan.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 190.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 190.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 189.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 189.
 Package rerunfilecheck Info: File `Project*Plan.out' has not changed.
 (rerunfilecheck)             Checksum: <no file>.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 190.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 189.
  ) 
 Here is how much of TeX's memory you used:
- 8964 strings out of 493921
- 138722 string characters out of 3144875
- 358051 words of memory out of 3000000
- 11971 multiletter control sequences out of 15000+200000
+ 8963 strings out of 493921
+ 138701 string characters out of 3144875
+ 356051 words of memory out of 3000000
+ 11969 multiletter control sequences out of 15000+200000
  57349 words of font info for 189 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  36i,10n,43p,597b,550s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -549,9 +549,9 @@ m Files (x86)/MiKTeX 2.9/fonts/type1/public/fpl/fplrc8a.pfb><C:/Program Files (
 x86)/MiKTeX 2.9/fonts/type1/urw/palatino/uplb8a.pfb><C:/Program Files (x86)/MiK
 TeX 2.9/fonts/type1/urw/palatino/uplr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/
 fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on "Project Plan.pdf" (2 pages, 77591 bytes).
+Output written on "Project Plan.pdf" (3 pages, 77749 bytes).
 PDF statistics:
- 52 PDF objects out of 1000 (max. 8388607)
- 8 named destinations out of 1000 (max. 500000)
+ 56 PDF objects out of 1000 (max. 8388607)
+ 9 named destinations out of 1000 (max. 500000)
  45089 words of extra memory for PDF output out of 51595 (max. 10000000)
 

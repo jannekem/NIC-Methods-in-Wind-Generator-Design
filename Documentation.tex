@@ -1,0 +1,189 @@
+% This is a model template for the solutions in computational science. You can find a very useful documentation for LaTeX in Finnish at ftp://ftp.funet.fi/pub/TeX/CTAN/info/lshort/finnish/ or in English at ftp://ftp.funet.fi/pub/TeX/CTAN/info/lshort/english/. The section List of mathematical symbols in Chapter 3 is especially useful for the typesetting of mathematical formulas.
+
+% Compile the document to PDF by command 'pdflatex model.tex' in the terminal. The command must be run twice for the references in the text to be correct.
+
+\documentclass[twoside]{article}
+
+\usepackage{lipsum} % Package to generate dummy text throughout this template
+
+\usepackage[sc]{mathpazo} % Use the Palatino font
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\linespread{1.05} % Line spacing - Palatino needs more space between lines
+\usepackage{microtype} % Slightly tweak font spacing for aesthetics
+
+\usepackage[hmarginratio=1:1,top=32mm,columnsep=20pt]{geometry} % Document margins
+\usepackage{multicol} % Used for the two-column layout of the document
+\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats in tables or figures
+\usepackage{booktabs} % Horizontal rules in tables
+\usepackage{float} % Required for tables and figures in the multi-column environment - they need to be placed in specific locations with the [H] (e.g. \begin{table}[H])
+\usepackage{hyperref} % For hyperlinks in the PDF
+\usepackage[english]{babel}
+\usepackage{lettrine} % The lettrine is the first enlarged letter at the beginning of the text
+\usepackage{paralist} % Used for the compactitem environment which makes bullet points with less space between them
+
+\usepackage{abstract} % Allows abstract customization
+\renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
+\renewcommand{\abstracttextfont}{\normalfont\small\itshape} % Set the abstract itself to small italic text
+
+\usepackage{titlesec} % Allows customization of titles
+\renewcommand\thesection{\Roman{section}} % Roman numerals for the sections
+\renewcommand\thesubsection{\Roman{subsection}} % Roman numerals for subsections
+\titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
+\titleformat{\subsection}[block]{\large}{\thesubsection.}{1em}{} % Change the look of the section titles
+
+\usepackage{fancyhdr} % Headers and footers
+\pagestyle{fancy} % All pages have headers and footers
+\fancyhead{} % Blank out the default header
+\fancyfoot{} % Blank out the default footer
+\fancyhead[C]{AS-0.3200 Automaatio- ja systeemitekniikan projektity\"ot} % Custom header text
+\fancyfoot[RO,LE]{\thepage} % Custom footer text
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Nature-Inspired Computing (NIC) Methods in Wind Generator Design}} % Article title
+
+\author{
+\large
+\textsc{Janne Kemppainen \& Eero J\"arviluoma}\\[2mm] % Your name
+\normalsize Aalto University School of Electrical Engineering \\ % Your institution
+%\normalsize \href{mailto:john@smith.com}{john@smith.com} % Your email address
+\vspace{-5mm}
+}
+\date{}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Insert title
+
+\thispagestyle{fancy} % All pages have headers and footers
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT
+%----------------------------------------------------------------------------------------
+
+\begin{abstract}
+
+\noindent This document is the documentation for the project Nature-Inspired Computing (NIC) Methods in Wind Generator Design for the course AS-0.3200 Automaatio- ja systeemitekniikan projektity\"ot. NIC methods include various different algorithms for efficiently finding near-optimal solutions for many optimizing problems.
+
+\end{abstract}
+
+%----------------------------------------------------------------------------------------
+%	ARTICLE CONTENTS
+%----------------------------------------------------------------------------------------
+
+\begin{multicols}{2} % Two-column layout throughout the main article text
+
+\section{The Goal}
+
+\lettrine[nindent=0em,lines=3]{T}{he} goal of this project work is to implement two nature-inspired algorithms for optimizing wind generator design. The wind generator model is given with a ready interface, so the approach here will be black box optimization of the parameters. The methods to be used are Genetic Algorithms (GA) and Differential Evolution (DE). 
+
+At the end of this project we should atleast have ready implementations for both of the algorithms for optimization of one objective. Depending on the workload and difficulty of implementation multiobjective optimization is also considered.
+
+We aim for 4cr, thus the initial time estimate is approx. 100 hours. Time will be spent mainly on planning and programming of the algorithms, but also on documentation, meetings and lectures. Plans for time usage are covered in more detail in section 3: Time and Teamwork Management.
+
+%------------------------------------------------
+
+\section{Structure}
+
+The work is divided into 4 sections: Project planning, pre-studying of the algorithms, implementation of the algorithms and finally documentation. All phases need to be completed for both algorithms we chose. The work packages will be completed in the said order, starting from project planning and concluding with documentation. The goals for each work packet are as follows:
+
+1. Project planning:
+Discussion of the algorithms, workload and other factors with the instructor. When the general structure of the project is clear, written project plan is submitted.
+
+2. Pre-study of the algorithms:
+Getting familiar with the chosen algorithms. While the exact sources for information are not specified in this report, special care should be taken to only use reliable and trustworthy sources.
+
+3. Implementation of the algorithms:
+Algorithms are implemented with Matlab software. To make the workload of 4cr realistic, we refrain from using the existing matlab functions for either of the algorithms (such as GA function from global optimization toolbox). This work package also includes the use of the given simulation model for the wind turbine. The feasibility of the results is also assessed to detect any possible errors in the algorithms.
+
+4. Documentation:
+Finally, the work is documented according to the outline in the AS-0.3200 wiki page. Among other required things, the document will consist of basic theory behind the used algorithms, discussion of the implementation and the possible performance and result differences between the algorithms.
+
+
+%Maecenas sed ultricies felis. Sed imperdiet dictum arcu a egestas. 
+%\begin{compactitem}
+%\item Donec dolor arcu, rutrum id molestie in, viverra sed diam
+%\item Curabitur feugiat
+%\item turpis sed auctor facilisis
+%\item arcu eros accumsan lorem, at posuere mi diam sit amet tortor
+%\item Fusce fermentum, mi sit amet euismod rutrum
+%\item sem lorem molestie diam, iaculis aliquet sapien tortor non nisi
+%\item Pellentesque bibendum pretium aliquet
+%\end{compactitem}
+%\lipsum[4] % Dummy text
+
+%------------------------------------------------
+
+\section{Time and Teamwork Management}
+
+While both participants will take part in all 4 work packages, Janne will mostly focus on planning, implementing and documentation of the DE algorithm, while Eero will focus on the GA. We will still cross-check each others' work to avoid and detect errors. We decided to set quite ambitious deadlines for each work packet in order to avoid interference from other courses that start in the 4. period. Progress is monitored with a table, which lists both realized and planned use of time. The planned deadlines and time consumption estimates for each work packet are as follows:
+
+1. Project planning:
+Deadline for the written report is 28.1.2014. Planned workload is 15 h for each participant.
+
+2. \& 3. Pre-study and implementation:
+Deadline for the initial algorithms is 28.2.2014. By this deadline, we should have optimization algorithms ready for single-objective case. If results are not feasible, or we want to go further into the multiobjective case, these corrections should be made in the following month, and be ready by 23.3.2014. Planned workload for these two packages combined is 70h for each participant.
+
+4. Documentation:
+Deadline for project documentation is set at 30.3.2014. Planned workload is 15h for each participant.
+
+
+
+\begin{table*}[t]
+\caption{Estimated time usage}
+\centering
+\begin{tabular}{lrrr}
+\toprule
+Name & Planning & Implementation & Documentation \\
+\midrule
+Janne & 15 & 70 & 15 \\
+Eero & 15 & 70 & 15 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+
+
+%------------------------------------------------
+
+\section{Risk management}
+Other courses may prove to be too time-consuming leaving less time for project work. For example it is difficult to estimate the time required for the project work of the course System Dynamics.
+
+Sudden illness may affect the capability to do work. This might mean that a part of the workload falls to the other person.
+
+Multiobjective optimization might be too difficult to implement with our knowledge and experience or it could increase the workload too much. We still have the option to opt for one objective optimization.
+
+The realised workload might be different for different algorithms (difficulty of implementation). To even out the workload the other one can give some support if possible and maybe focus more on the documenting side of the project.
+
+Other responsibilities can affect the time available for working. It is important to get a good head start with the project and start doing it right away piece by piece.
+
+There is probably going to be a need for some code refactoring as we gain more insight and see what are the better ways of implementing different things. This might cause surprising amounts of re-work.
+
+The implementation of either one of the algorithms can be wrong. This should be apparent if the results were to be somehow odd. However, it is possible that the wrong implementation yields results that we fail to see as faulty. It is also possible that due to the nature of these algorithms the results are not optimal.
+
+File corruption or accidental deleting of files might cause irreversible loss of information. Thus we are going to use the Git platform to manage our code and documentation files.
+
+If any of the risks realize, and we have problems reaching the deadlines specified in the section 3, we have the option of delaying our deadlines closer to the deadlines specified by the course staff. However, for the convenience of every party involved, we try to stick to our planned deadlines as much as possible, and delaying these deadlines should only be used as a last resort.
+%----------------------------------------------------------------------------------------
+%	REFERENCE LIST
+%----------------------------------------------------------------------------------------
+
+%\begin{thebibliography}{99} % Bibliography - this is intentionally simple in this template
+
+%\bibitem[Figueredo and Wolf, 2009]{Figueredo:2009dg}
+%Figueredo, A.~J. and Wolf, P. S.~A. (2009).
+%\newblock Assortative pairing and life history strategy - a cross-cultural
+%  study.
+%\newblock {\em Human Nature}, 20:317--330.
+ 
+%\end{thebibliography}
+
+%----------------------------------------------------------------------------------------
+
+\end{multicols}
+
+\end{document}

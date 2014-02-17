@@ -1,0 +1,10 @@
+function [R_delta, R_delta2, R_PM, R_Fe] = calculateReluctances(lm,lp,lt, tau_p, lef,l, delta,mu0,muPM)
+% lm = magnet thickness
+% lp = magnet width
+% lt = ???????
+% tau_p = pole pitch
+% lef = effective machine length
+R_delta = delta/(mu0*tau_p*lef);
+R_delta2 = lm/(mu0*(tau_p-lp)*lef);
+R_PM = lm/(mu0*muPM*lp*l) + lt/(mu0*lp*l);
+R_Fe = 0.25*R_delta;

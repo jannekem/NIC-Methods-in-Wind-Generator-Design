@@ -1,0 +1,11 @@
+% this function is used to evaluate the parameters
+% the higher the return value, the better system
+function val = evalobjects(objects, constraints)
+
+% check constraints
+if(constraints(1)<=0 || constraints(2)<1 || constraints(3)>=100)
+    val = 0;
+    return;
+end
+
+val = 

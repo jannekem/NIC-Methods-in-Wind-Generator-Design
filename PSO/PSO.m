@@ -1,6 +1,6 @@
 %initialize parameters
 t_end = 100;
-particleAmount = 100;
+particleAmount = 5;
 limits = [35000 65000; 2000000 6000000;
     0.001 0.05; 0.8 5; 0.6 0.95; 21000 48000;
     1.3 1.6; 0.8 0.99; 0.25 0.75;
@@ -10,8 +10,8 @@ discrete_limits = [20 80; 1 3]; % indices for integer parameters
 % generate the swarm and velocity matrices
 swarm = zeros(t_end, particleAmount, 12);
 swarmd = zeros(t_end, particleAmount, 2);
-velocity = zeros(t_end, particleAmount, 12);
-velocityd = zeros(t_end, particleAmount, 2);
+velocity = zeros(particleAmount, 12);
+velocityd = zeros(particleAmount, 2);
 bestpars = zeros(particleAmount, 12); % best parameters for each particle 
 bestparsd = zeros(particleAmount, 2); % best discrete parameters ""
 bestresults = zeros(particleAmount,1);
@@ -35,7 +35,11 @@ parfor ind = 1:particleAmount
 end
 [bestval, bestidx] = max(bestresults);
 
-
-for t=1:t_end
-    
+for t=2:t_end
+    swarm_temp = squeeze(swarm(t-1,:,:)); % required for matrix substraction
+    velocity = velocity...
+        + 2*rand(size(velocity)).*(bestpars-swarm_temp)...
+        + 2*rand(size(velocity))...
+        .*(ones(particleAmount,1)*bestpars(bestidx,:)-swarm_temp);
 end
+

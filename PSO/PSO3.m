@@ -109,9 +109,10 @@ for t=2:t_end
     end
     x = swarm(t,:,1);
     y = swarm(t,:,2);
-    %scatter(x,y);
+    
     
 %     % save to video
+%     scatter(x,y);
 %     img = hardcopy(fig, '-dzbuffer', '-r0'); 
 %     aviobj = addframe(aviobj, im2frame(img));
     t

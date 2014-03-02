@@ -1,6 +1,7 @@
 %initialize parameters
-t_end = 10;
-particleAmount = 100;
+clear all
+t_end = 15;
+particleAmount = 10;
 limits = [35000 65000; 2000000 6000000;
     0.001 0.05; 0.8 5; 0.6 0.95; 21000 48000;
     1.3 1.6; 0.8 0.99; 0.25 0.75;
@@ -26,7 +27,7 @@ for ind = 1:particleAmount
     swarmd(1,ind,1) = randi([20 80],1);
     swarmd(1,ind,2) = randi([1 3],1);
 end
-tic
+
 parfor ind = 1:particleAmount
     params = combineparams(swarm(1,ind,:), swarmd(1,ind,:));
     [objects, constraints] = design_PMSM_generator(params);
@@ -34,21 +35,21 @@ parfor ind = 1:particleAmount
     bestparsd(ind,:) = swarmd(1,ind,:);
     bestresults(ind) = evalobjects(objects, constraints);
 end
-toc
+
 [bestval, bestidx] = max(bestresults);
 
-hf = figure('color','white');
-hold on
+
+fig = figure('Visible','off');
 x = swarm(1,:,1);
 y = swarm(1,:,2);
-ht = scatter(x,y);
-set(ht,'XDataSource','x')
-set(ht,'YDataSource','y')
-drawnow
+scatter(x,y);
 
-    % slice limits to reduce parfor-function overhead
-    limits_slice1 = limits(:,1);
-    limits_slice2 = limits(:,2);
+% save video frame
+aviobj = avifile('out.avi','FPS',1);
+img = hardcopy(fig, '-dzbuffer', '-r0'); 
+aviobj = addframe(aviobj, im2frame(img));
+
+paratemp = zeros(particleAmount, 14); % DEBUG VARIABLE FOR FINDING TIME INTENSIVE PARAMETER COMBINATIONS
 
     meas_t = zeros(t_end,1);
 for t=2:t_end
@@ -57,50 +58,56 @@ for t=2:t_end
     validity = bestresults;
     validity(validity(:,1)==-100) = 0;
     validity(validity(:,1)~=0) = 1;
+    sparvalidity = sparse(diag(validity));
         
     % calculate velocity
     
     velocity = velocity...
-        + diag(validity)*2*rand(size(velocity)).*(bestpars-swarm_temp)...
+        + 2*rand(size(velocity)).*(bestpars-swarm_temp)...
         + 2*rand(size(velocity))...
         .*(ones(particleAmount,1)*bestpars(bestidx,:)-swarm_temp);
-   
+    
     % update swarm locations
     swarm(t,:,:) = swarm_temp + velocity;
     
-    % enforce boundaries
-    
-    for par = 1:12
-        swarm(t,:,par) = max(min(swarm(t,:,par),limits_slice2(par)),limits_slice1(par));
-    end
-    tic
+    % check boundaries
+    boundcheck = zeros(size(swarm_temp));
+    boundcheck(:,par) = swarm(t,:,par) - max(min(swarm(t,:,par),limits(par,2)),limits(par,1));
+ 
+    %boundcheck(boundcheck~=0) = 1;
+ 
     % simulate
-    for ind = 1:particleAmount 
-        params = combineparams(swarm(t,ind,:), swarmd(1,ind,:)); % TODO: discrete value handling
-        [objects, constraints] = design_PMSM_generator(params);
-        result = evalobjects(objects, constraints);
+    parfor ind = 1:particleAmount 
+        if size(boundcheck(ind)==0) % check that none of the values is over limits
+            params = combineparams(swarm(t,ind,:), swarmd(1,ind,:)); % TODO: discrete value handling
+            [objects, constraints] = design_PMSM_generator(params);
+            result = evalobjects(objects, constraints);
+        else
+            result = -200;
+        end
         if result > bestresults(ind)
             bestpars(ind,:) = swarm(t,ind,:);
             bestparsd(ind,:) = swarmd(1,ind,:);
             bestresults(ind) = result;
         end
     end
-    toc
+    
     % update global best value
     [bestvalcand, bestidxcand] = max(bestresults);
     if(bestvalcand > bestval)
        bestval = bestvalcand;
        bestid = bestidxcand;
     end
-    bestval
-    t
     x = swarm(t,:,1);
     y = swarm(t,:,2);
-    refreshdata(hf,'caller');
-    drawnow
+    scatter(x,y);
+    % save to video
+    img = hardcopy(fig, '-dzbuffer', '-r0'); 
+    aviobj = addframe(aviobj, im2frame(img));
+    t
 end
 
 params = combineparams(bestpars(bestidx,:)', bestparsd(bestidx,:));
 [objects, constraints] = design_PMSM_generator(params)
 
-
+aviobj = close(aviobj);

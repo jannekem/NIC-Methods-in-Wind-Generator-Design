@@ -106,11 +106,13 @@ The positions and velocities are updated until a set criterion is fulfilled. The
 
 Our optimization problem is a hybrid of discrete and continuous parameters whereas the original algorithm was developed for continuous case only. Therefore we have to make some special arrangements for the two discrete parameters. Pole pair number is an integer between 20 and 80. For this parameter we can use an approximation of the continuous case and always round the value to the nearest integer. However, the number of slots per pole per phase can only be 1, 2 or 3. Therefore we have to run the optimization three times with each value to find the optimal parameters.
 
-The implementation began with defining the required variables for the swarm and the limitations. The easy part was to fill the solution space with random particles. After this, some problems emerged.
+The implementation began with defining the required variables for the swarm and the limitations. The easy part was to fill the solution space with random particles. After implementing the basic algorithm some problems emerged.
 
-The first disturbing note was that the computer resources weren't used to their full potential as the calculations were performed mostly on one core at a time. After some research the Matlab Parallel Computing Toolbox, and especially the parfor loop, was found. This allowed for the parallelization of the generator simulation and somewhat improved the performance. Not everything is parallelizable though as the particles have to be synchronized. 
+The first disturbing observation was that the computer resources weren't used to their full potential as the calculations were performed mostly on one core at a time. After some research the Matlab Parallel Computing Toolbox, and especially the parfor loop, was found. This allowed for the parallelization of the generator simulation and somewhat improved the performance. Not everything is parallelizable though as the particles have to be synchronized. 
 
+The next problem was how to enforce the modeling limitations. The initial attempt was to enforce the parameters to stay inside the defined problem space but this is against the nature of the algorithm. As a result the particles would often hit the hard limits and gather near the edges. The decision was made to check the boundaries but skip the calculations and assign a bad fitness value if any of the parameters were out of bounds.
 
+After the change in handling the boundaries it was noticed that the swarm diverges for some reason. In spite of penalizing out of bounds values some particles seemed to wander far from the desired area. This behaviour needs to be looked into.
 
 \section{Structure}
 

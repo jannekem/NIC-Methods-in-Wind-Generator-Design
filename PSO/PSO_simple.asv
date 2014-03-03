@@ -1,7 +1,7 @@
 %initialize parameters
 clear all
-t_end = 1000;
-particleAmount = 50;
+t_end = 15;
+particleAmount = 10;
 parameterAmount = 2;
 limits = [-1 1; -1 1]; % parameter limits
 
@@ -64,12 +64,12 @@ for t=2:t_end
 %         + 2*rand(size(velocity)).*(bestpars-swarm_temp)...
 %         + 2*rand(size(velocity))...
 %         .*(ones(particleAmount,1)*bestpars(bestidx,:)-swarm_temp)
-    velocityLimitFraction = 0.1
+    
     for ind = 1:particleAmount
         for par = 1:parameterAmount
             velocity(ind,par) = velocity(ind,par)+2*rand()*(bestpars(ind,par)-swarm_temp(ind,par))+2*rand()*(bestpars(bestidx,par)-swarm_temp(ind,par));
             % limit velocity
-            velocity(ind,par) = max(min(velocity(ind,par),velocityLimitFraction*(limits(par,2)-limits(par,1))),velocityLimitFraction*(limits(par,1)-limits(par,2)));
+            velocity(ind,par) = max(min(velocity,limits(par,2)-limits(par,1)),limits(par,1)-limits(par,2));
         end
     end
 
@@ -125,11 +125,11 @@ drawnow
 
 
 for t = 1:t_end
-    pause(0.001)
+    pause(0.2)
     x = swarm(t,:,1);
     y = swarm(t,:,2);
     refreshdata(hf,'caller');
-    axis([limits(1,1) limits(1,2) limits(2,1) limits(2,2)])
+    %axis([limits(1,1) limits(1,2) limits(2,1) limits(2,2)])
     drawnow
 end
 %params = combineparams(bestpars(bestidx,:)', bestparsd(bestidx,:));

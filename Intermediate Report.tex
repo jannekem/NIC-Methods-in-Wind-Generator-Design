@@ -123,15 +123,39 @@ After finding the document by Engelbrecht ~\cite{pitfalls} it became evident tha
 Running the provided simulation model was inconsistent performance wise. Usually the simulation was calculated in much less than one second but sometimes the calculation could take several seconds, though. This might happen because of nearly singular matrices in the model but the issue is out of our reach.
 
 
+\section{Genetic Algorithm}
+
+Genetic Algorithm was implemented by Eero. The algorithm is modeled from Darwin’s theory of evolution. A good overview and discussion on the genetic algorithm is presented in ~\cite{mitchell}. In terms of actual implementation, the Genetic Algorithm is based on 5 different steps ~\cite{obitko}:
+\begin{enumerate} \itemsep1pt \parskip0pt \parsep0pt
+\item New Population
+\item Fitness evaluation
+\item Testing whether the solution is satisfactory
+\item Creating a new population
+\item Looping from step 2.
+\end{enumerate}
+
+In step 1, a random new population is generated.  Population size may vary, but a too large population will lead to unacceptable waste of calculating time and offers very little in return when compared to smaller population sizes. A good population size is around 20-40 candidates.
+
+In steps 2 and 3, the fitness of each candidate is evaluated.  Fitness describes how well the candidate satisfies our criteria.Our fitness evaluation is based on the simulation model provided to us by VTT.  If the best candidate passes the pre -set goal in terms of  fitness, the  looping is stopped and algorithm is complete.
+
+In step 4 a new population is created. First, 10 survivals are  selected based on "pie chart roulette", that is, most fit candidates are most likely to survive, but the process is also based on randomness. Next, the survivals produce offspring, and stand a chance to create corssovers with each other. This means that the survivals' offspring inherit attributes from both parents. The best candidate is passed on to the next generation as is. This is called elitism. Finally, a  random, low-chance, mutation may occur.
+
+The methods used in step 4 and how often they occur are based on empirical evidence. Good  chance for crossover is determined to be around 0.7, for example. Mutation chance needs to be low, or else the process loses it's properties and becomes essentially a random-walk process. However, a low mutation chance is required to make the system evolve.
+
+Finally, in step 5 the process is repeated from step 2. The process is repeated maximum in our case maximum of 100 times, to make the calculations run smoothly and in reasonable timeframe.
+
+Currently the program code for the algorithm is complete, but fails to compile, due to errors with the provided simulation model. Further evaluation of the selected methods and parameters, such as crossover and mutation chance, are needed. After the code is complete, the results are analyzed and parameters tuned for best possible results.
+
+
 %------------------------------------------------
 
 \section{Time and Teamwork Management}
 
 As mentioned before we had some challenges allocating time for the project. The deadlines for the different phases have been delayed. Here we summarize the time usage up to date.
 
-\textbf{Janne} Project planning took 8 hours. If the first lectures are counted in, the total time for the first phase is 14 hours. Familiarization with the PSO algorithm took 1 hour and there have been 17.5 hours of programming and troubleshooting. Writing the intermediate report and presentation slides took 6.5 hours. Total time allocated for the course is 39 hours.
+\textbf{Janne} Project planning took 8 hours. If the first lectures are counted in, the total time for the first phase is 14 hours. Familiarization with the PSO algorithm took 1 hour and there have been 17.5 hours of programming and troubleshooting. Writing the intermediate report and presentation slides took 7 hours. Total time allocated for the course is 40 hours.
 
-\textbf{Eero}
+\textbf{Eero} Project planning was done in co-operation with Janne and thus took the same 14 hours, including lectures. Familiarizion of algorithms took around 3 hours,  and programming around 12 hours, bringing the total hours of implementation phase to 15 hours. FIinally, 3 hours were spent on writing this document and presentation slides. Total time spent is thus 32 hours.
 
 
 
@@ -168,9 +192,15 @@ Git hasn't caused any major problems yet.
  Proceedings of IEEE international conference on neural networks. Vol. 4. No. 2. 1995. 
  
 \bibitem{pitfalls}
- Engelbrecht, A. \emph{Particle Swamr Optimization: Pitfalls and Convergence Aspects.}
+ Engelbrecht, A. \emph{Particle Swarm Optimization: Pitfalls and Convergence Aspects.}
  Department of Computer Science, University of Pretoria, South Africa
  
+\bibitem{mitchell}
+Mitchell, M. \emph{An Introduction to Genetic Algorithms.} First MIT paperback edition, fifth printing, 1999. 
+ 
+\bibitem{obitko}
+Obitko, M., \emph{Introduction to genetic algorithms}, Hochschule f\"ur Technik und Wirtschaft Dresden (FH), \url{http://www.obitko.com/tutorials/genetic-algorithms/index.php}, accessed 3.3.2014
+
  
 \end{thebibliography}
 

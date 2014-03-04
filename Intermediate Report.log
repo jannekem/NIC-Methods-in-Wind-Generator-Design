@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.17)  4 MAR 2014 08:58
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.17)  4 MAR 2014 09:43
 entering extended mode
 **Intermediate*Report.tex
 ("I:\ohjelmointi\GitHub\GA-DA-octo-adventure\Intermediate Report.tex"
@@ -550,11 +550,11 @@ Package rerunfilecheck Info: File `Intermediate*Report.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 181.
  ) 
 Here is how much of TeX's memory you used:
- 9039 strings out of 493921
- 139903 string characters out of 3144875
- 346072 words of memory out of 3000000
+ 9035 strings out of 493921
+ 139868 string characters out of 3144875
+ 347072 words of memory out of 3000000
  11987 multiletter control sequences out of 15000+200000
- 61539 words of font info for 228 fonts, out of 3000000 for 9000
+ 61316 words of font info for 225 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  36i,10n,43p,601b,569s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\Janne\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\
@@ -565,7 +565,7 @@ rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/fpl/fplrc8a.pfb><C:/Program Fi
 les (x86)/MiKTeX 2.9/fonts/type1/urw/palatino/uplb8a.pfb><C:/Program Files (x86
 )/MiKTeX 2.9/fonts/type1/urw/palatino/uplr8a.pfb><C:/Program Files (x86)/MiKTeX
  2.9/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on "Intermediate Report.pdf" (3 pages, 104963 bytes).
+Output written on "Intermediate Report.pdf" (3 pages, 105152 bytes).
 PDF statistics:
  97 PDF objects out of 1000 (max. 8388607)
  11 named destinations out of 1000 (max. 500000)

@@ -1,6 +1,6 @@
 %initialize parameters
 clear all
-t_end = 1000;
+t_end = 100;
 particleAmount = 50;
 parameterAmount = 2;
 limits = [-1 1; -1 1]; % parameter limits
@@ -35,16 +35,7 @@ end
 [bestval, bestidx] = max(bestresults);
 
 
-% create video
-% fig = figure('Visible','off');
-% x = swarm(1,:,1);
-% y = swarm(1,:,2);
-% scatter(x,y);
-% 
-% % save video frame
-% aviobj = avifile('out.avi','FPS',1);
-% img = hardcopy(fig, '-dzbuffer', '-r0'); 
-% aviobj = addframe(aviobj, im2frame(img));
+
 
 paratemp = zeros(particleAmount, 14); % DEBUG VARIABLE FOR FINDING TIME INTENSIVE PARAMETER COMBINATIONS
 
@@ -64,7 +55,7 @@ for t=2:t_end
 %         + 2*rand(size(velocity)).*(bestpars-swarm_temp)...
 %         + 2*rand(size(velocity))...
 %         .*(ones(particleAmount,1)*bestpars(bestidx,:)-swarm_temp)
-    velocityLimitFraction = 0.1
+    velocityLimitFraction = 0.01;
     for ind = 1:particleAmount
         for par = 1:parameterAmount
             velocity(ind,par) = velocity(ind,par)+2*rand()*(bestpars(ind,par)-swarm_temp(ind,par))+2*rand()*(bestpars(bestidx,par)-swarm_temp(ind,par));
@@ -105,15 +96,12 @@ for t=2:t_end
        bestid = bestidxcand;
     end
     
-    % save to video
-    % scatter(x,y);
-    %img = hardcopy(fig, '-dzbuffer', '-r0'); 
-    %aviobj = addframe(aviobj, im2frame(img));
-    % draw on screen
+   
     
     t
 end
 
+% % display figure
 hf = figure('color','white');
 hold on
 x = swarm(1,:,1);
@@ -125,14 +113,15 @@ drawnow
 
 
 for t = 1:t_end
-    pause(0.001)
+    pause(0.01)
     x = swarm(t,:,1);
     y = swarm(t,:,2);
     refreshdata(hf,'caller');
     axis([limits(1,1) limits(1,2) limits(2,1) limits(2,2)])
     drawnow
 end
+
+
 %params = combineparams(bestpars(bestidx,:)', bestparsd(bestidx,:));
 %[objects, constraints] = design_PMSM_generator(params)
 
-%aviobj = close(aviobj);

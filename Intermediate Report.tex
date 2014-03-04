@@ -114,7 +114,9 @@ The first disturbing observation was that the computer resources weren't used to
 
 The next problem was how to enforce the modeling limitations. The initial attempt was to enforce the parameters to stay inside the defined problem space but this is against the nature of the algorithm. As a result the particles would often hit the hard limits and gather near the edges. The decision was made to check the boundaries but skip the calculations and assign a bad fitness value if any of the parameters were out of bounds.
 
-After the change in handling the boundaries it was noticed that the swarm diverges for some reason. In spite of penalizing out of bounds values particles seemed to wander far from the desired area. This had to be looked into. After finding the document by Engelbrecht ~\cite{pitfalls} it became evident that the particle velocities exploded. Using a simpler model $f(x,y)=-x^2-y^2$ yielded similar results, so the next step was to introduce velocity clamping. By changing the fraction of maximum velocity related to the size of the parameter space it is possible to adjust the particle convergence speed and the tendency to wander off.
+After the change in handling the boundaries it was noticed that the swarm diverges for some reason. In spite of penalizing out of bounds values the particles seemed to wander far from the desired area. This had to be looked into.
+
+After finding the document by Engelbrecht ~\cite{pitfalls} it became evident that the particle velocities exploded. Using a simpler model $f(x,y)=-x^2-y^2$ yielded similar results, so the next step was to introduce velocity clamping. By changing the fraction of the maximum allowed velocity related to the size of the parameter space it is possible to adjust the particle convergence speed and the tendency of the particles wandering off.
 
 
 Running the provided simulation model was inconsistent performance wise. Usually the simulation was calculated in much less than one second but sometimes the calculation could take several seconds, though. This might happen because of nearly singular matrices in the model but the issue is out of our reach.
@@ -148,7 +150,7 @@ At this time, we have opted out of the multiobjective optimization as it would r
 
 There has already been some need to rewrite program code as things haven't always worked out the way they were intended to.
 
-Evidently there is something wrong with the PSO algorithm as the swarm diverges. 
+The diverging of the PSO algorithm caused some headache until velocity clamping was introduced to the system. 
 
 Git hasn't caused any major problems yet.
 

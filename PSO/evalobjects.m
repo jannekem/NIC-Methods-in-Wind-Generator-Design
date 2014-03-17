@@ -4,7 +4,7 @@ function val = evalobjects(objects, constraints)
 Pout_target = 3000000;
 
 % evaluate fitness function
-val = - abs(Pout_target-objects(1));
+val = - abs(Pout_target-objects(1))+ objects(2)*100 - objects(4)/1000+ objects(5)*1000;
 
 % punish for exceeding the constraints
 if(constraints(1)<=0 || constraints(2)<1 || constraints(3)>=100)

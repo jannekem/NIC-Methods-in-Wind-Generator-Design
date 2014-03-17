@@ -113,9 +113,9 @@ end
 hf = figure('color','white');
 hold on
 
-xpar = 3;
-ypar = 4;
-zpar = 5;
+xpar = 9;
+ypar = 10;
+zpar = 11;
 
 x = swarm(1,:,xpar);
 y = swarm(1,:,ypar);

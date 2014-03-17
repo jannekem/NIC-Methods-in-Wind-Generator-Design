@@ -48,14 +48,14 @@ for t=2:t_end
         
     % calculate velocity
     
-%     velocity = velocity...
-%         + 2*rand(size(velocity)).*(bestpars-swarm_temp)...
-%         + 2*rand(size(velocity))...
-%         .*(ones(particleAmount,1)*bestpars(bestidx,:)-swarm_temp)
-    velocityLimitFraction = 0.01;
+     velocity = velocity...
+         + 2*rand(size(velocity)).*(bestpars-swarm_temp)...
+         + 2*rand(size(velocity))...
+         .*(ones(particleAmount,1)*bestpars(bestidx,:)-swarm_temp);
+    velocityLimitFraction = 0.1;
     for ind = 1:particleAmount
         for par = 1:parameterAmount
-            velocity(ind,par) = velocity(ind,par)+2*rand()*(bestpars(ind,par)-swarm_temp(ind,par))+2*rand()*(bestpars(bestidx,par)-swarm_temp(ind,par));
+%            velocity(ind,par) = velocity(ind,par)+2*rand()*(bestpars(ind,par)-swarm_temp(ind,par))+2*rand()*(bestpars(bestidx,par)-swarm_temp(ind,par));
             % limit velocity
             velocity(ind,par) = max(min(velocity(ind,par),velocityLimitFraction*(limits(par,2)-limits(par,1))),velocityLimitFraction*(limits(par,1)-limits(par,2)));
         end
@@ -90,7 +90,7 @@ for t=2:t_end
     [bestvalcand, bestidxcand] = max(bestresults);
     if(bestvalcand > bestval)
        bestval = bestvalcand;
-       bestid = bestidxcand;
+       bestidx = bestidxcand;
     end
     
    

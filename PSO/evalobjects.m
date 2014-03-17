@@ -3,12 +3,15 @@
 function val = evalobjects(objects, constraints)
 Pout_target = 3000000;
 
-% check constraints
+% evaluate fitness function
+val = - abs(Pout_target-objects(1));
+
+% punish for exceeding the constraints
 if(constraints(1)<=0 || constraints(2)<1 || constraints(3)>=100)
-    val = -100;
-    return;
+    val = val - 10000;
 end
 
-val = 1000/abs(Pout_target-objects(1)) + objects(2) ...
-     - objects(3)/100000 + 10*objects(4) + 10*objects(5) ...
-     - objects(6)/100000;
+
+%val = 1000/abs(Pout_target-objects(1)) + objects(2) ...
+%     - objects(3)/100000 + 10*objects(4) + 10*objects(5) ...
+%     - objects(6)/100000;

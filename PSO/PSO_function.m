@@ -1,10 +1,5 @@
 %% INITIALIZE THE SWARM AND VARIABLES
-clear all
-t_end = 100;
-particleAmount = 50;
-phi = 1; % inertia coefficient
-gamma1 = 2;% acceleration constants
-gamma2 = 2; 
+function [params, bestvals] = PSO_function(t_end, particleAmount, phi, gamma1, gamma2)
 
 % parameter limits, last value indicates if the value is considered integer
 limits = [20 80 1; 
@@ -23,7 +18,7 @@ limits = [20 80 1;
     0.01 0.1 0];
 parameterAmount = size(limits,1);       % amount of optimizable parameters
 integerIndices = find(limits(:,3)==1);  % find the indices for the integer values
-validity = zeros(particleAmount,1);     % holder for the personal validities
+
 
 % generate the swarm and velocity matrices
 swarm = zeros(t_end, particleAmount, parameterAmount);
@@ -110,39 +105,7 @@ for t=2:t_end
     disp(['Best value: ' num2str(bestval)]);
 end
 
-%% PLOT FIGURES
 
-hf = figure('color','white');
-hold on
-
-xpar = 3;
-ypar = 4;
-zpar = 5;
-
-x = swarm(1,:,xpar);
-y = swarm(1,:,ypar);
-z = swarm(1,:,zpar);
-ht = scatter3(x,y,z);
-set(ht,'XDataSource','x')
-set(ht,'YDataSource','y')
-set(ht,'ZDataSource','z')
-grid
-drawnow
-
-for t = 1:t_end
-    pause(0.05)
-    grid
-    x = swarm(t,:,xpar);
-    y = swarm(t,:,ypar);
-    z = swarm(t,:,zpar);
-    refreshdata(hf,'caller');
-    axis([limits(xpar,1) limits(xpar,2) limits(ypar,1) limits(ypar,2) limits(zpar,1) limits(zpar,2)])
-    grid
-    view(3)
-    drawnow
-end
-% figure
-% gplotmatrix(squeeze(swarm(t_end,:,:)),[],swarm(t_end,:,3))
 
 %% PRINT RESULTS TO CONSOLE
 
@@ -155,6 +118,7 @@ disp(['Best parameters: ', num2str(params(1)) ', ' num2str(params(2)) ', ' num2s
     ', ' num2str(params(9)) ', ' num2str(params(10)) ...
     ', ' num2str(params(11)) ', ' num2str(params(12)) ...
     ', ' num2str(params(13)) ', ' num2str(params(14))]);
+disp(['Objects: ' num2str(objects(1)) ', ' num2str(objects(2)) ', ' num2str(objects(3)) ', ' num2str(objects(4)) ', ' num2str(objects(5)) ', ' num2str(objects(6))]);
 disp(['Constraints: ', num2str(constraints(1)), ' ' num2str(constraints(2)), ' ' num2str(constraints(3))]);
 
 

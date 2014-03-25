@@ -1,8 +1,8 @@
 %% INITIALIZE THE SWARM AND VARIABLES
 clear all
-t_end = 150;
-particleAmount = 200;
-phi = 0.7; % inertia coefficient
+t_end = 100;
+particleAmount = 50;
+phi = 1; % inertia coefficient
 gamma1 = 2;% acceleration constants
 gamma2 = 2; 
 
@@ -59,7 +59,7 @@ for t=2:t_end
     swarm_temp = squeeze(swarm(t-1,:,:)); % required for matrix subtraction  
     
     % calculate velocity
-    velocity = phi*velocity...
+    velocity = (0.5+rand()/2)*velocity...
          + gamma1*rand(size(velocity)).*(bestpars-swarm_temp)...
          + gamma2*rand(size(velocity))...
          .*(ones(particleAmount,1)*bestpars(bestidx,:)-swarm_temp);
@@ -106,6 +106,8 @@ for t=2:t_end
        bestidx = bestidxcand;
     end
     bestvals(t) = bestval;
+    disp(['Iteration ' num2str(t)]);
+    disp(['Best value: ' num2str(bestval)]);
 end
 
 %% PLOT FIGURES
@@ -113,9 +115,9 @@ end
 hf = figure('color','white');
 hold on
 
-xpar = 9;
-ypar = 10;
-zpar = 11;
+xpar = 3;
+ypar = 4;
+zpar = 5;
 
 x = swarm(1,:,xpar);
 y = swarm(1,:,ypar);
@@ -139,3 +141,23 @@ for t = 1:t_end
     view(3)
     drawnow
 end
+% figure
+% gplotmatrix(squeeze(swarm(t_end,:,:)),[],swarm(t_end,:,3))
+
+%% PRINT RESULTS TO CONSOLE
+
+params = bestpars(bestidx,:);
+params(integerIndices)=round(params(integerIndices));
+[objects, constraints] = design_PMSM_generator(params);
+disp(['Best parameters: ', num2str(params(1)) ', ' num2str(params(2)) ', ' num2str(params(3)) ', ' num2str(params(4)) ...
+    ', ' num2str(params(5)) ', ' num2str(params(6)) ...
+    ', ' num2str(params(7)) ', ' num2str(params(8)) ...
+    ', ' num2str(params(9)) ', ' num2str(params(10)) ...
+    ', ' num2str(params(11)) ', ' num2str(params(12)) ...
+    ', ' num2str(params(13)) ', ' num2str(params(14))]);
+disp(['Constraints: ', num2str(constraints(1)), ' ' num2str(constraints(2)), ' ' num2str(constraints(3))]);
+
+
+
+
+

@@ -7,13 +7,14 @@ survivals_size = round(population_size/3);
 mutation_chance = 0.05;
 crossover_chance = 0.7;
 iter_count = 1;
-iter_limit = 7;
-condition_fitness = 100;
+iter_limit = 15;
+condition_fitness = inf;
 global_best = -inf; % For performance evaluation
 
 fitness = zeros(1,population_size);
 population = zeros(population_size, param_size);
 survivals = zeros(survivals_size, param_size);
+elite = zeros(1,param_size);
 
 % State space limitations for inputs:
 % NOTE: Some parameters must be integers and thus will be treated different
@@ -45,7 +46,7 @@ end
 
 %%
 while(iter_count < iter_limit)
-
+    disp(['iteration: ' num2str(iter_count)])
     %{
     Step 2 - Fitness: Evaluating the fitness of wind turbine design based on
     the given simulation model.
@@ -56,16 +57,30 @@ while(iter_count < iter_limit)
     elite_idx = 0;
     elite_fitness = -inf;
     
+    % Worst fitness is needed to handle negative fitness values later on.
+    
+    worst_fitness = 0;
+    
     % Calculating fitness:
     
     for i = 1:population_size
-        [objectives, ~] = design_PMSM_generator(population(i,:)');
-        fitness(i) = objectives(2);     % Fitness function
+        [objectives, constraints] = design_PMSM_generator(population(i,:)');
+        fitness(i) = evalobjects(objectives,constraints);     % Fitness function
         if(fitness(i) > elite_fitness)
             elite_idx = i;
             elite_fitness = fitness(i);
         end
+        
+        if(fitness(i) < worst_fitness)
+            worst_fitness = fitness(i);
+        end
     end
+    
+    elite = population(elite_idx,:);
+    
+    % Scaling negative fitness values to positive.
+    
+    fitness = fitness + abs(worst_fitness);
     
     %{
     Step 3 - Test: Test whether satisfactory solution is found
@@ -88,27 +103,33 @@ while(iter_count < iter_limit)
     is passed on to the next generation as is.
     %}
     
-    % Elitism:
-    
-    population(1,:) = population(elite_idx,:);
-    
     % Roulette wheel selection:
     
     fitness_sum = sum(fitness);
     avr_fitness(iter_count) = fitness_sum/population_size;   % For performance evaluation
     
-    for i = 1:round(population_size/3)
+    for i = 1:survivals_size
         winner = rand*fitness_sum;
         total = 0;
-        for a = 1:population_size
+        len = size(population,1);
+        for a = 1:len
             total = total+fitness(a);
             if(total >= winner)
                 survivals(i,:) = population(a,:);
+                fitness_sum = fitness_sum - fitness(a);
+                fitness(a) = [];
+                population(a,:) = [];
                 break;
             end
         end
     end
-
+    
+    population = zeros(population_size,param_size);
+    
+    % Elitism:
+    
+    population(1,:) = elite;
+        
     % Crossover and mutation
     
     for i = 2:population_size
@@ -154,7 +175,6 @@ while(iter_count < iter_limit)
     end
     
     iter_count = iter_count + 1;
-    disp(['iteration: ' num2str(iter_count)])
 end
 
 

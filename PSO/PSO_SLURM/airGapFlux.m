@@ -1,0 +1,3 @@
+function Phidelta = airGapFlux(ThetaPM, R_PM, R_Fe, R_delta, R_delta2)
+Phidelta = ThetaPM./(R_PM + R_delta + R_Fe + (R_PM./R_delta2)...
+    .*(R_delta + R_Fe));

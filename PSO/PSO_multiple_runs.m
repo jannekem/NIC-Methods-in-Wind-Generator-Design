@@ -8,9 +8,9 @@ start(ttimer);
 
 parameters = zeros(1,14);
 bestValues = zeros(1,1);
-while stat==true
+for idx = 1:10
     count = count + 1;
-    [params, bestvals] = PSO_function(40,150,0.7,2,2);
+    [params, bestvals] = PSO_function(150,50,0.7,2,2);
     parameters(count, :)=params;
     bestValues(count) = bestvals(end);
 end

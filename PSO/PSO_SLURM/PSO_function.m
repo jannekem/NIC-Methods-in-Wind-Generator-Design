@@ -1,6 +1,9 @@
 function PSO_function(arrayTaskNumber, particleAmount, t_end, phi)
 
 %% INITIALIZTION OF SWARM VARIABLES
+% initialize random generator
+rng(sum((arrayTaskNumber+100)*clock));
+
 % parameter limits, last value indicates if the value is considered integer
 limits = [20 80 1; 
     35000 65000 0; 

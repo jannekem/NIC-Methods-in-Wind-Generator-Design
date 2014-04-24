@@ -42,7 +42,7 @@
 %	TITLE SECTION
 %----------------------------------------------------------------------------------------
 
-\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Nature-Inspired Computing (NIC) Methods in Wind Generator Design}} % Article title
+\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Nature-Inspired Computing (NIC) Methods in Wind Generator Design Project Documentation}} % Article title
 
 \author{
 \large
@@ -79,110 +79,124 @@
 
 \section{The Goal}
 
-\lettrine[nindent=0em,lines=3]{T}{he} goal of this project work is to implement two nature-inspired algorithms for optimizing wind generator design. The wind generator model is given with a ready interface, so the approach here will be black box optimization of the parameters. The methods to be used are Genetic Algorithms (GA) and Differential Evolution (DE). 
+\lettrine[nindent=0em,lines=3]{T}{he} goal of this project is to implement two nature-inspired algorithms for optimizing wind generator design. The generator design module is provided by VTT and it is handled as a black box. The methods used in this project are Genetic Algorithms (GA) and Particle Swarm Optimization (PSO). We describe the basics of the algorithms, our implementations and the findings.
 
 At the end of this project we should atleast have ready implementations for both of the algorithms for optimization of one objective. Depending on the workload and difficulty of implementation multiobjective optimization is also considered.
 
-We aim for 4cr, thus the initial time estimate is approx. 100 hours. Time will be spent mainly on planning and programming of the algorithms, but also on documentation, meetings and lectures. Plans for time usage are covered in more detail in section 3: Time and Teamwork Management.
+The aim for the workload was 4cr which equals approximately 100 hours.
+
+We acknowledge the computational resources provided by Aalto Science-IT project.
+
+
+
 
 %------------------------------------------------
 
 \section{Structure}
-
-The work is divided into 4 sections: Project planning, pre-studying of the algorithms, implementation of the algorithms and finally documentation. All phases need to be completed for both algorithms we chose. The work packages will be completed in the said order, starting from project planning and concluding with documentation. The goals for each work packet are as follows:
-
-1. Project planning:
-Discussion of the algorithms, workload and other factors with the instructor. When the general structure of the project is clear, written project plan is submitted.
-
-2. Pre-study of the algorithms:
-Getting familiar with the chosen algorithms. While the exact sources for information are not specified in this report, special care should be taken to only use reliable and trustworthy sources.
-
-3. Implementation of the algorithms:
-Algorithms are implemented with Matlab software. To make the workload of 4cr realistic, we refrain from using the existing matlab functions for either of the algorithms (such as GA function from global optimization toolbox). This work package also includes the use of the given simulation model for the wind turbine. The feasibility of the results is also assessed to detect any possible errors in the algorithms.
-
-4. Documentation:
-Finally, the work is documented according to the outline in the AS-0.3200 wiki page. Among other required things, the document will consist of basic theory behind the used algorithms, discussion of the implementation and the possible performance and result differences between the algorithms.
-
-
-%Maecenas sed ultricies felis. Sed imperdiet dictum arcu a egestas. 
-%\begin{compactitem}
-%\item Donec dolor arcu, rutrum id molestie in, viverra sed diam
-%\item Curabitur feugiat
-%\item turpis sed auctor facilisis
-%\item arcu eros accumsan lorem, at posuere mi diam sit amet tortor
-%\item Fusce fermentum, mi sit amet euismod rutrum
-%\item sem lorem molestie diam, iaculis aliquet sapien tortor non nisi
-%\item Pellentesque bibendum pretium aliquet
-%\end{compactitem}
-%\lipsum[4] % Dummy text
+\section{The Optimization Problem}
+Our optimization problem is a black box model of a wind turbine generator developed by VTT. The model has 14 inputs and 6 outputs. Two of the inputs are integer values and the rest are floating point numbers. In addition to this there are 3 constraints that should be met for the design. 
+	
+An ideal generator would produce exactly 3 MW power and have a maximised torque density, minimum weight, high efficiency, high power factor and minimised costs. All the goals can't be optimised simultaneously as they require different parameter combinations. The optimal solution is a compromise where improving some value would deteriorate the others.
 
 %------------------------------------------------
+
+\section{Particle Swarm Optimization}
+
+Implementing the Particle Swarm Optimization algorithm was assigned to Janne. The algorithm was first proposed by James Kennedy and Russel Eberhart in 1995 and in our project is their version of the algorithm is implemented with some minor modifications.
+
+The algorithm itself is quite simple. The solution space is first initialized with particles set to random locations with zero velocity. Then the fitness function is evaluated for each particle and the best coordinates are stored. Then the velocities are calculated with the following formula: \cite{pso}
+\begin{verbatim}
+vx[][]=vx[][]+
+ 2*rand()*(pbestx[][]-presentx[][])+
+ 2*rand()*(pbestx[][gbest]-presentx[][])
+\end{verbatim}
+	
+The positions and velocities are updated until a set criterion is fulfilled. The velocity function has a constant 2 for the stochastic part so that the particles would have the possibility to move over the previous best value. This value yields the best results as there is no good way to individually guess which one of the velocity increments should be weighted more. \cite{pso} 
+	
+	Our optimization problem is a hybrid of discrete and continuous parameters whereas the original algorithm was developed for continuous case only. Therefore we have to make some special arrangements for the two discrete parameters. Pole pair number is an integer between 20 and 80. The first idea was to approximate handle this parameter as continuous and always round the result. The number of slots per pole per pahse has the possible values of 1, 2 and 3 so the idea was to calculate the optimization for each of the three possible parameter values.
+	
+	In the implementation it was decided, however, that in the eyes of the algorithm itself all the parameters would be continous. The simulation model doesn't allow for non-integer parameters so before each run the corresponding values are rounded to the nearest integer before running the model.
+	
+	The implementation began with defining the required variables for the swarm and the limitations. The easy part was to fill the solution space with random particles. After implementing the basic algorithm some problems emerged.
+	
+	The first disturbing observation was that the computer resources weren't used to their full potential as the calculations were performed mostly on one core at a time. After some research the Matlab Parallel Computing Toolbox, and especially the parfor loop, was found. This allowed for the parallelization of the generator simulation and somewhat improved the performance. Not everything is parallelizable though as the particles have to be synchronized. 
+	
+	The next problem was how to enforce the modeling limitations. The initial attempt was to enforce the parameters to stay inside the defined problem space but this is against the nature of the algorithm. As a result the particles would often hit the hard limits and gather near the edges. The decision was made to check the boundaries but skip the calculations and assign a bad fitness value if any of the parameters were out of bounds.
+	
+	After the change in handling the boundaries it was noticed that the swarm diverges for some reason. In spite of penalizing out of bounds values the particles seemed to wander far from the desired area. This had to be looked into.
+	
+	After finding the document by Engelbrecht ~\cite{pitfalls} it became evident that the particle velocities exploded. Using a simpler model $f(x,y)=-x^2-y^2$ yielded similar results, so the next step was to introduce velocity clamping. By changing the fraction of the maximum allowed velocity related to the size of the parameter space it is possible to adjust the particle convergence speed and the tendency of the particles wandering off.
+	
+	There was also the fundamental mistake that the best particle index was not updated properly so the best value remained to be the one that happened to be the best one on the initialization. This was observed as one of the particles would not move at all.
+
+	Running the provided simulation model was inconsistent performance wise. Usually the simulation was calculated in much less than one second but sometimes the calculation could take several seconds, though. This might happen because of nearly singular matrices in the model but the issue is out of our reach.
+
+	To manage the large amount of computations in a reasonable time we chose to take advantage of the Aalto University Triton computing cluster. The usage of Triton is described in its own chapter.
+
+\section{Genetic Algorithm}
+
+	Genetic Algorithm was implemented by Eero. The algorithm is modeled from Darwin’s theory of evolution. A good overview and discussion on the genetic algorithm is presented in ~\cite{mitchell}. In terms of actual implementation, the Genetic Algorithm is based on 5 different steps ~\cite{obitko}:
+	\begin{enumerate} \itemsep1pt \parskip0pt \parsep0pt
+	\item New Population
+	\item Fitness evaluation
+	\item Testing whether the solution is satisfactory
+	\item Creating a new population
+	\item Looping from step 2.
+	\end{enumerate}
+ 	
+	In step 1, a random new population is generated.  Population size may vary, but a too large population will lead to unacceptable waste of calculating time and offers very little in return when compared to smaller population sizes. A good population size is around 20-40 candidates.
+
+
+	In steps 2 and 3, the fitness of each candidate is evaluated.  Fitness describes how well the candidate satisfies our criteria.Our fitness evaluation is based on the simulation model provided to us by VTT.  If the best candidate passes the pre -set goal in terms of  fitness, the  looping is stopped and algorithm is complete.
+	
+	In step 4 a new population is created. First, 10 survivals are  selected based on "pie chart roulette", that is, most fit candidates are most likely to survive, but the process is also based on randomness. Next, the survivals produce offspring, and stand a chance to create corssovers with each other. This means that the survivals' offspring inherit attributes from both parents. The best candidate is passed on to the next generation as is. This is called elitism. Finally, a  random, low-chance, mutation may occur. In our case this means that a random parameter  of a random  candidate will be incremented or decremented by a small amount.
+	
+	The methods used in step 4 and how often they occur are based on empirical evidence. Good  chance for crossover is determined to be around 0.7, for example. Mutation chance needs to be low, or else the process loses it's properties and becomes essentially a random-walk process. However, a low mutation chance is required to make the system evolve.
+	
+	Finally, in step 5 the process is repeated from step 2. The process is repeated maximum in our case maximum of 100 times, to make the calculations run smoothly and in reasonable timeframe.
+	
+	Currently the program code for the algorithm is complete, but fails to compile, due to errors with the provided simulation model. Further evaluation of the selected methods and parameters, such as crossover and mutation chance, are needed. After the code is complete, the results are analyzed and parameters tuned for best possible results.
+	
+	
+	\section{Computing in the Cluster}
+	The calculation capabilities of the home computers proved to be inadequate when we decided to run multiple iterations of the algorithms so that we could investigate the consistency of the results. For example running the PSO algorithm with a swarm size of 50 and 150 simulation time steps took several hours to produce 70 results. The performance felt insufficient so we chose to search for alternative methods.
+	
+	The next attempt was to try to utilize the new Aalto servers Brute and Force. However, their Matlab license allows only for 12 parallel workers and as the server CPU cores run only at a bit over 2 GHz the performance was very similar to the home computer.
+	
+	Disappointed with the performance of the available resources we came upon the Aalto Triton computing cluster. Running some 400 compute nodes it was even more than we were looking for.
+	
+	The cluster is running Scientific Linux and the computation tasks are delivered as batch jobs. We had to adapt the Matlab scripts to the requirements of the environment. The algorithms run as functions that among other parameters take the batch ID so that the computation results can be stored to different files. The batch system runs multiple instances of Matlab on different compute nodes simultaneously. 
+	
+	After the calculations the saved .mat files are transferred for further analysis. A script reads the output files one by one and then analyzes the results.
+	
+	
+	
+\section{Analyzing the Results}
+
 
 \section{Time and Teamwork Management}
-
-While both participants will take part in all 4 work packages, Janne will mostly focus on planning, implementing and documentation of the DE algorithm, while Eero will focus on the GA. We will still cross-check each others' work to avoid and detect errors. We decided to set quite ambitious deadlines for each work packet in order to avoid interference from other courses that start in the 4. period. Progress is monitored with a table, which lists both realized and planned use of time. The planned deadlines and time consumption estimates for each work packet are as follows:
-
-1. Project planning:
-Deadline for the written report is 28.1.2014. Planned workload is 15 h for each participant.
-
-2. \& 3. Pre-study and implementation:
-Deadline for the initial algorithms is 28.2.2014. By this deadline, we should have optimization algorithms ready for single-objective case. If results are not feasible, or we want to go further into the multiobjective case, these corrections should be made in the following month, and be ready by 23.3.2014. Planned workload for these two packages combined is 70h for each participant.
-
-4. Documentation:
-Deadline for project documentation is set at 30.3.2014. Planned workload is 15h for each participant.
+As mentioned before we had some challenges allocating time for the project. The deadlines for the different phases have been delayed. Here we summarize the time usage up to date.
 
 
 
-\begin{table*}[t]
-\caption{Estimated time usage}
-\centering
-\begin{tabular}{lrrr}
-\toprule
-Name & Planning & Implementation & Documentation \\
-\midrule
-Janne & 15 & 70 & 15 \\
-Eero & 15 & 70 & 15 \\
-\bottomrule
-\end{tabular}
-\end{table*}
+\begin{thebibliography}{99} % Bibliography - this is intentionally simple in this template
+\bibitem{pso}
+ Kennedy, J. and Eberhart, R.
+  \emph{Particle Swarm Optimization},
+ Proceedings of IEEE international conference on neural networks. Vol. 4. No. 2. 1995. 
 
-
-
-%------------------------------------------------
-
-\section{Risk management}
-Other courses may prove to be too time-consuming leaving less time for project work. For example it is difficult to estimate the time required for the project work of the course System Dynamics.
-
-Sudden illness may affect the capability to do work. This might mean that a part of the workload falls to the other person.
-
-Multiobjective optimization might be too difficult to implement with our knowledge and experience or it could increase the workload too much. We still have the option to opt for one objective optimization.
-
-The realised workload might be different for different algorithms (difficulty of implementation). To even out the workload the other one can give some support if possible and maybe focus more on the documenting side of the project.
-
-Other responsibilities can affect the time available for working. It is important to get a good head start with the project and start doing it right away piece by piece.
-
-There is probably going to be a need for some code refactoring as we gain more insight and see what are the better ways of implementing different things. This might cause surprising amounts of re-work.
-
-The implementation of either one of the algorithms can be wrong. This should be apparent if the results were to be somehow odd. However, it is possible that the wrong implementation yields results that we fail to see as faulty. It is also possible that due to the nature of these algorithms the results are not optimal.
-
-File corruption or accidental deleting of files might cause irreversible loss of information. Thus we are going to use the Git platform to manage our code and documentation files.
-
-If any of the risks realize, and we have problems reaching the deadlines specified in the section 3, we have the option of delaying our deadlines closer to the deadlines specified by the course staff. However, for the convenience of every party involved, we try to stick to our planned deadlines as much as possible, and delaying these deadlines should only be used as a last resort.
-%----------------------------------------------------------------------------------------
-%	REFERENCE LIST
-%----------------------------------------------------------------------------------------
-
-%\begin{thebibliography}{99} % Bibliography - this is intentionally simple in this template
-
-%\bibitem[Figueredo and Wolf, 2009]{Figueredo:2009dg}
-%Figueredo, A.~J. and Wolf, P. S.~A. (2009).
-%\newblock Assortative pairing and life history strategy - a cross-cultural
-%  study.
-%\newblock {\em Human Nature}, 20:317--330.
+\bibitem{pitfalls}
+ Engelbrecht, A. \emph{Particle Swarm Optimization: Pitfalls and Convergence Aspects.}
+ Department of Computer Science, University of Pretoria, South Africa
  
-%\end{thebibliography}
+\bibitem{mitchell}
+Mitchell, M. \emph{An Introduction to Genetic Algorithms.} First MIT paperback edition, fifth printing, 1999. 
+ 
+\bibitem{obitko}
+Obitko, M., \emph{Introduction to genetic algorithms}, Hochschule f\"ur Technik und Wirtschaft Dresden (FH), \url{http://www.obitko.com/tutorials/genetic-algorithms/index.php}, accessed 3.3.2014
 
-%----------------------------------------------------------------------------------------
+\end{thebibliography}
+
 
 \end{multicols}
 

@@ -1,14 +1,11 @@
 #!/bin/sh
-#SBATCH --time=0-00:05:00 --mem-per-cpu=500
-#SBATCH -p play
+#SBATCH --time=0-02:00:00 --mem-per-cpu=500
 #SBATCH -o job-%a.out
-#SBATCH  --array=1-100
+#SBATCH  --array=1-200
 
-# define the working dir on the compute node
-node_dir="local/$USER"
+# change to working directory
+cd $WRKDIR/PSO_SLURM
 
-# check if it doesn't exist and create one
-[ -d $node_dir ] || mkdir $node_dir
-
+# launch computation
 module load matlab
 matlab -nojvm -r "PSO_function($SLURM_ARRAY_TASK_ID,50,500,50,0.7)"

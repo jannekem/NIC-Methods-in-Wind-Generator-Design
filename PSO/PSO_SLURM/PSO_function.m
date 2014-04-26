@@ -110,10 +110,10 @@ for t=2:t_end
        endCounter = 0;
     end
     endCounter = endCounter + 1;
+    bestvals(t) = bestval;
     if (endCounter > endCondition)
         break;
     end
-    bestvals(t) = bestval;
 end
 
 
@@ -123,4 +123,4 @@ params(integerIndices) = round(params(integerIndices));
 filename = strcat('output-',int2str(arrayTaskNumber));
 save(filename, 'bestval','params','bestvals','iterCounter');
 disp(sprintf('SUCCESS array task number %d',arrayTaskNumber));
-%exit
+exit

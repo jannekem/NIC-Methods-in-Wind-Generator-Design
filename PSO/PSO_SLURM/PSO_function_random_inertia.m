@@ -1,4 +1,4 @@
-function PSO_function(arrayTaskNumber, particleAmount, t_end)
+function PSO_function_random_inertia(arrayTaskNumber, particleAmount, t_end, endCondition)
 
 %% INITIALIZTION OF SWARM VARIABLES
 % initialize random generator
@@ -23,6 +23,8 @@ parameterAmount = size(limits,1);       % amount of optimizable parameters
 integerIndices = find(limits(:,3)==1);  % find the indices for the integer values
 gamma1 = 2;
 gamma2 = 2;
+endCounter = 0;         % counter for the amount of iterations from the previous best
+iterCounter = 0;        % counter for the total number of iterations
 
 
 % generate the swarm and velocity matrices
@@ -105,14 +107,19 @@ for t=2:t_end
     if(bestvalcand > bestval)
        bestval = bestvalcand;
        bestidx = bestidxcand;
+       endCounter = 0;
     end
     bestvals(t) = bestval;
+    if (endCounter > endCondition)
+        break;
+    end
 end
 
 
 %% SAVE RESULTS TO DISK
 params = bestpars(bestidx,:);
+params(integerIndices) = round(params(integerIndices));
 filename = strcat('output-',int2str(arrayTaskNumber));
-save(filename, 'bestval','params');
+save(filename, 'bestval','params','bestvals','iterCounter');
 disp(sprintf('SUCCESS array task number %d',arrayTaskNumber));
 exit

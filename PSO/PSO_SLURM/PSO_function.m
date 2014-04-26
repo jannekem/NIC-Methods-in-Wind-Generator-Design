@@ -1,4 +1,4 @@
-function PSO_function(arrayTaskNumber, particleAmount, t_end, phi)
+function PSO_function(arrayTaskNumber, particleAmount, t_end,endCondition, phi)
 addpath('model');
 %% INITIALIZTION OF SWARM VARIABLES
 % initialize random generator
@@ -23,7 +23,8 @@ parameterAmount = size(limits,1);       % amount of optimizable parameters
 integerIndices = find(limits(:,3)==1);  % find the indices for the integer values
 gamma1 = 2;
 gamma2 = 2;
-
+endCounter = 0;         % counter for the amount of iterations from the previous best
+iterCounter = 0;        % counter for the total amount of iterations
 
 % generate the swarm and velocity matrices
 swarm = zeros(t_end, particleAmount, parameterAmount);
@@ -57,6 +58,7 @@ bestvals(1) = bestval;
 
 %% RUN THE PSO ALGORITHM
 for t=2:t_end
+    iterCounter = iterCounter + 1;        % increase total iterations count
     swarm_temp = squeeze(swarm(t-1,:,:)); % required for matrix subtraction  
     
     % calculate velocity
@@ -105,6 +107,11 @@ for t=2:t_end
     if(bestvalcand > bestval)
        bestval = bestvalcand;
        bestidx = bestidxcand;
+       endCounter = 0;
+    end
+    endCounter = endCounter + 1;
+    if (endCounter > endCondition)
+        break;
     end
     bestvals(t) = bestval;
 end
@@ -114,6 +121,6 @@ end
 params = bestpars(bestidx,:);
 params(integerIndices) = round(params(integerIndices));
 filename = strcat('output-',int2str(arrayTaskNumber));
-save(filename, 'bestval','params');
+save(filename, 'bestval','params','bestvals','iterCounter');
 disp(sprintf('SUCCESS array task number %d',arrayTaskNumber));
 %exit

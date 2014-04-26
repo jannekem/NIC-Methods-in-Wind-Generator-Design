@@ -1,5 +1,5 @@
 function PSO_function_random_inertia(arrayTaskNumber, particleAmount, t_end, endCondition)
-
+addpath('model')
 %% INITIALIZTION OF SWARM VARIABLES
 % initialize random generator
 rng(sum((arrayTaskNumber+100)*clock));

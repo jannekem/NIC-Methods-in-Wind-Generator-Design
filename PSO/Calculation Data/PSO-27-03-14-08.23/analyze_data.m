@@ -1,4 +1,4 @@
-clear all
+%clear all
 bestvals=[];
 parameters=[];
 iterations = 200;
@@ -18,3 +18,7 @@ for index = 1:iterations
 end
 mean_value = mean ( bestvals )
 variance = var ( bestvals )
+
+%% PLOT HISTOGRAM
+figure(1)
+hist(bestvals,21)

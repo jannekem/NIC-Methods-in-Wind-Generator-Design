@@ -19,3 +19,4 @@ end
 mean_value = mean ( bestvals )
 variance = var ( bestvals )
 hist ( bestvals )
+

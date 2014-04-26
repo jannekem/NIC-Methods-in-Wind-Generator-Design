@@ -1,5 +1,5 @@
 function PSO_function(arrayTaskNumber, particleAmount, t_end, phi)
-
+addpath('model');
 %% INITIALIZTION OF SWARM VARIABLES
 % initialize random generator
 rng(sum((arrayTaskNumber+100)*clock));
@@ -112,7 +112,8 @@ end
 
 %% SAVE RESULTS TO DISK
 params = bestpars(bestidx,:);
+params(integerIndices) = round(params(integerIndices));
 filename = strcat('output-',int2str(arrayTaskNumber));
 save(filename, 'bestval','params');
 disp(sprintf('SUCCESS array task number %d',arrayTaskNumber));
-exit
+%exit

@@ -119,7 +119,7 @@ end
 %% SAVE RESULTS TO DISK
 params = bestpars(bestidx,:);
 params(integerIndices) = round(params(integerIndices));
-filename = strcat('output-',int2str(arrayTaskNumber));
+filename = strcat('output_rand-',int2str(arrayTaskNumber));
 save(filename, 'bestval','params','bestvals','iterCounter');
 disp(sprintf('SUCCESS array task number %d',arrayTaskNumber));
 exit

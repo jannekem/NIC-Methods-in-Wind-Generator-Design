@@ -1,19 +1,22 @@
+function genetic_func(arrayTaskNumber)
+addpath('model');
 %{
 Step 0 - Initializing some constants.
 %}
 
-clear all
-clc
-rand('seed',2016);
+% initialize random generator
+rng(sum((arrayTaskNumber+100)*clock));
 
-display = true;
+display = false;
 population_size = 30;
 param_size = 14;
 survivals_size = round(population_size/3);
 mutation_chance = 0.05;
 crossover_chance = 0.7;
 iter_count = 1;
-iter_limit = 15;
+iter_limit = 1000;
+iter_converged = 200;
+iter_converged_count = 0;
 condition_fitness = inf;
 
 fitness = zeros(1,population_size);
@@ -193,6 +196,23 @@ while(iter_count <= iter_limit)
        end
     end
     
+    % Break iteration if elite fitness hasen't improved on 200
+    % consecutive iterations.
+    if(iter_count >= 2)
+       if(elite_fitness(iter_count) == elite_fitness(iter_count-1))
+           iter_converged_count = iter_converged_count+1; 
+       else
+           iter_converged_count = 0;
+       end
+    end
+    if(iter_converged_count >= iter_converged)
+        if(display)
+            disp(['Elite fitness has not improved on ' num2str(iter_converged) ...
+                'consecutive iterations. breaking at iteration ' num2str(iter_count)])
+        end
+        break;
+    end
+    
     iter_count = iter_count + 1;
 end
 
@@ -209,3 +229,9 @@ if(display)
     ylabel('Fitness');
     title('Average fitness development');
 end
+
+%% SAVE RESULTS TO DISK
+filename = strcat('genetic-output-',int2str(arrayTaskNumber));
+save(filename, 'elite_fitness','avr_fitness','elite','iter_count');
+disp(sprintf('SUCCESS array task number %d',arrayTaskNumber));
+exit

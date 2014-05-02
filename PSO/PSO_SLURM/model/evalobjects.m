@@ -1,14 +1,14 @@
 % this function is used to evaluate the parameters
 % the higher the return value, the better system
 function val = evalobjects(objects, constraints)
-Pout_target = 3000000;
+%Pout_target = 3000000;
 
 % evaluate fitness function
-val = - abs(Pout_target-objects(1))+ objects(2)*100 - objects(4)/1000+ objects(5)*1000;
-
+% val = - abs(Pout_target-objects(1))+ objects(2)*100 - objects(4)/1000+ objects(5)*1000;
+val = objects(4);
 % punish for exceeding the constraints
-if(constraints(1)<=0 || constraints(2)<1 || constraints(3)>=100)
-    val = val - 10000;
+if(constraints(1)<=0 || constraints(2)<1 || constraints(3)>=100 || ~isreal(constraints(3)))
+    val = val - 1000000;
 end
 
 

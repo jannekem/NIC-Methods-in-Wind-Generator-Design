@@ -1,4 +1,4 @@
-function PSO_function(arrayTaskNumber, particleAmount, t_end,endCondition, phi)
+function PSO_function(arrayTaskNumber, particleAmount, t_end, phi)
 addpath('model');
 %% INITIALIZTION OF SWARM VARIABLES
 % initialize random generator
@@ -23,11 +23,10 @@ parameterAmount = size(limits,1);       % amount of optimizable parameters
 integerIndices = find(limits(:,3)==1);  % find the indices for the integer values
 gamma1 = 2;
 gamma2 = 2;
-endCounter = 0;         % counter for the amount of iterations from the previous best
-iterCounter = 0;        % counter for the total amount of iterations
+
 
 % generate the swarm and velocity matrices
-swarm = zeros(t_end, particleAmount, parameterAmount);
+swarm = zeros(particleAmount, parameterAmount);
 velocity = zeros(particleAmount, parameterAmount);
 bestpars = zeros(particleAmount, parameterAmount);  % best parameters for each particle 
 bestresults = zeros(particleAmount,1);
@@ -38,17 +37,17 @@ bestvals = zeros(t_end,1); % best value vector
 % initialize swarm
 for ind = 1:particleAmount 
     for par = 1:parameterAmount
-       swarm(1,ind,par) = limits(par,1)+rand()*(limits(par,2)-limits(par,1));
+       swarm(ind,par) = limits(par,1)+rand()*(limits(par,2)-limits(par,1));
     end
 end
 
 
 %% EVALUATE INITIAL VALUES
 for ind = 1:particleAmount
-    params = squeeze(swarm(1,ind,:));
+    params = squeeze(swarm(ind,:));
     params(integerIndices) = round(params(integerIndices)); % round to the nearest integer
     [objects, constraints] = design_PMSM_generator(params);
-    bestpars(ind,:) = swarm(1,ind,:);
+    bestpars(ind,:) = swarm(ind,:);
     val = evalobjects(objects, constraints);
     bestresults(ind) = val;
 end
@@ -58,17 +57,17 @@ bestvals(1) = bestval;
 
 %% RUN THE PSO ALGORITHM
 for t=2:t_end
-    iterCounter = iterCounter + 1;        % increase total iterations count
-    swarm_temp = squeeze(swarm(t-1,:,:)); % required for matrix subtraction  
+    
+    
     
     % calculate velocity
     velocity = phi*velocity...
-         + gamma1*rand(size(velocity)).*(bestpars-swarm_temp)...
+         + gamma1*rand(size(velocity)).*(bestpars-swarm)...
          + gamma2*rand(size(velocity))...
-         .*(ones(particleAmount,1)*bestpars(bestidx,:)-swarm_temp);
+         .*(ones(particleAmount,1)*bestpars(bestidx,:)-swarm);
      
     % limit velocities
-    velocityLimitFraction = 0.1;
+    velocityLimitFraction = 1;
     for ind = 1:particleAmount
         for par = 1:parameterAmount
             % limit velocity
@@ -77,18 +76,18 @@ for t=2:t_end
     end
 
     % update swarm locations
-    swarm(t,:,:) = swarm_temp + velocity;
+    swarm = swarm + velocity;
     
     % check boundaries
-    boundcheck = zeros(size(swarm_temp));
+    boundcheck = zeros(size(swarm));
     for par = 1:parameterAmount
-        boundcheck(:,par) = swarm(t,:,par) - max(min(swarm(t,:,par),limits(par,2)),limits(par,1));
+        boundcheck(:,par) = swarm(:,par) - max(min(swarm(:,par),limits(par,2)),limits(par,1));
     end
      
     % simulate
     parfor ind = 1:particleAmount 
-        if size(boundcheck(ind)==0) % check that none of the values are over limits
-            params = squeeze(swarm(t,ind,:)); 
+        if all(boundcheck(ind,:)==0) % check that none of the values are over limits
+            params = swarm(ind,:); 
             % round the integer values
             params(integerIndices) = round(params(integerIndices));
             [objects, constraints] = design_PMSM_generator(params);
@@ -97,7 +96,7 @@ for t=2:t_end
             val = -1000000000; % punish for exceeding the limits
         end
         if val > bestresults(ind)
-            bestpars(ind,:) = swarm(t,ind,:);
+            bestpars(ind,:) = swarm(ind,:);
             bestresults(ind) = val;
         end
     end
@@ -107,13 +106,11 @@ for t=2:t_end
     if(bestvalcand > bestval)
        bestval = bestvalcand;
        bestidx = bestidxcand;
-       endCounter = 0;
+       
     end
-    endCounter = endCounter + 1;
     bestvals(t) = bestval;
-    if (endCounter > endCondition)
-        break;
-    end
+    disp(['Iteration ' num2str(t)]);
+    disp(['Best value: ' num2str(bestval)]);
 end
 
 
@@ -121,6 +118,6 @@ end
 params = bestpars(bestidx,:);
 params(integerIndices) = round(params(integerIndices));
 filename = strcat('output-',int2str(arrayTaskNumber));
-save(filename, 'bestval','params','bestvals','iterCounter');
+save(filename, 'bestval','params','bestvals');
 disp(sprintf('SUCCESS array task number %d',arrayTaskNumber));
 exit

@@ -7,7 +7,7 @@ Step 0 - Initializing some constants.
 % initialize random generator
 rng(sum((arrayTaskNumber+100)*clock));
 
-display = false;
+display = true;
 population_size = 30;
 param_size = 14;
 survivals_size = round(population_size/3);
@@ -53,6 +53,8 @@ for i = 1:population_size
     end
 end
 
+savecounter = 1;
+
 %%
 while(iter_count <= iter_limit)
     if(display)
@@ -74,7 +76,7 @@ while(iter_count <= iter_limit)
     
     % Calculating fitness:
     
-    parfor i = 1:population_size
+    for i = 1:population_size
         [objectives, constraints] = design_PMSM_generator(population(i,:)');
         fitness(i) = evalobjects(objectives,constraints);     % Fitness function
     end
@@ -217,6 +219,13 @@ while(iter_count <= iter_limit)
     end
     
     iter_count = iter_count + 1;
+	
+	savecounter = savecounter + 1;
+	if (savecounter == 500)
+		filename = strcat('genetic-output-',int2str(arrayTaskNumber));
+		save(filename, 'elite_fitness','avr_fitness','elite','iter_count');
+		savecounter = 0;
+	end
 end
 
 if(display)

@@ -54,10 +54,10 @@ end
 
 [bestval, bestidx] = max(bestresults);  % evaluate the initial best results
 bestvals(1) = bestval;
-
+itercount = 1;
 %% RUN THE PSO ALGORITHM
 for t=2:t_end
-    
+    itercount = itercount + 1;
     
     
     % calculate velocity
@@ -111,6 +111,16 @@ for t=2:t_end
     bestvals(t) = bestval;
     disp(['Iteration ' num2str(t)]);
     disp(['Best value: ' num2str(bestval)]);
+
+    % Save results after every 1000 iterations
+	if (itercount == 1000)
+	    params = bestpars(bestidx,:);
+	    params(integerIndices) = round(params(integerIndices));
+	    filename = strcat('output-',int2str(arrayTaskNumber));
+        save(filename, 'bestval','params','bestvals');
+	    disp(sprintf('Saved values.'));
+		itercount = 0;
+	end
 end
 
 

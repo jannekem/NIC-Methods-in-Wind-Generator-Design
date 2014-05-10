@@ -26,7 +26,7 @@ mean_value = mean ( bestvalues )
 variance = var ( bestvalues )
 %hist ( bestvalues )
 
-%% (ii) Compute mean consumption
+%% MEAN
 M = length(bestvalues);
 N = length(bestvals);
 stdv=zeros(1,N);
@@ -45,8 +45,6 @@ for ind = 1:70
     customColormap = [customColormap; val,val,val];
 end
 customColormap = customColormap./255;
-
-
 set(gca,'NextPlot','replacechildren','ColorOrder',customColormap)
 plot(values);
 hold on;
@@ -55,4 +53,39 @@ plot(mv+stdv,'k','Linewidth',2.5);
 plot(mv-stdv,'k','Linewidth',2.5);
 hold off;
 xlabel('iteration');ylabel('efficiency');
-%axis([0 10 0 30])
+axis([0 10000 0.98 0.99])
+
+%% PLOT best values
+figure(3)
+customColormap=[];
+for ind = 1:50
+    val = 250 - ind*5;
+    customColormap = [customColormap; val,val,val];
+end
+customColormap = customColormap./255;
+colormap(customColormap)
+scatter(parameters(:,11),parameters(:,12),[],values(end,:))
+xlabel('Relative slot opening')
+ylabel('Relative slot width')
+
+
+figure(4)
+colormap(customColormap)
+scatter(parameters(:,9),parameters(:,10),[],values(end,:))
+
+%% DEVELOPMENT of histogram
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

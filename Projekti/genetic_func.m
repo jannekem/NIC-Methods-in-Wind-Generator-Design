@@ -228,19 +228,19 @@ while(iter_count <= iter_limit)
 	end
 end
 
-if(display)
-    figure(1);
-    plot(elite_fitness);
-    xlabel('Iter');
-    ylabel('Fitness');
-    title('Elite fitness development');
-
-    figure(2);
-    plot(avr_fitness);
-    xlabel('Iter');
-    ylabel('Fitness');
-    title('Average fitness development');
-end
+% if(display)
+%     figure(1);
+%     plot(elite_fitness);
+%     xlabel('Iter');
+%     ylabel('Fitness');
+%     title('Elite fitness development');
+% 
+%     figure(2);
+%     plot(avr_fitness);
+%     xlabel('Iter');
+%     ylabel('Fitness');
+%     title('Average fitness development');
+% end
 
 %% SAVE RESULTS TO DISK
 filename = strcat('genetic-output-',int2str(arrayTaskNumber));

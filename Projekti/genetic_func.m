@@ -14,8 +14,8 @@ survivals_size = round(population_size/3);
 mutation_chance = 0.05;
 crossover_chance = 0.7;
 iter_count = 1;
-iter_limit = 100;
-iter_converged = 200;
+iter_limit = 10000;
+iter_converged = 20000;
 iter_converged_count = 0;
 condition_fitness = inf;
 
@@ -237,4 +237,4 @@ end
 filename = strcat('genetic-output-',int2str(arrayTaskNumber));
 save(filename, 'elite_fitness','avr_fitness','elite','iter_count');
 disp(sprintf('SUCCESS array task number %d',arrayTaskNumber));
-%exit
+exit

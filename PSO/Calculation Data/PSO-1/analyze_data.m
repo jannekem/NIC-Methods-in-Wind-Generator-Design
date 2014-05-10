@@ -59,7 +59,6 @@ axis([0 10000 0.98 0.99])
 parameters(330,12)
 
 %% PLOT best values
-figure(3)
 customColormap=[];
 for ind = 1:50
     val = 250 - ind*5;
@@ -67,39 +66,44 @@ for ind = 1:50
 end
 customColormap = customColormap./255;
 colormap(customColormap)
-scatter(parameters(:,11),parameters(:,12),[],values(end,:))
-xlabel('Relative slot opening')
-ylabel('Relative slot width')
 
+figure(3)
+colormap(customColormap)
+scatter(parameters(:,1),parameters(:,2),[],values(end,:))
+%xlabel('Relative slot opening')
+%ylabel('Relative slot width')
 
 figure(4)
 colormap(customColormap)
-scatter(parameters(:,9),parameters(:,10),[],values(end,:))
+scatter(parameters(:,3),parameters(:,4),[],values(end,:))
 
 figure(5)
 colormap(customColormap)
-scatter(parameters(:,7),parameters(:,8),[],values(end,:))
+scatter(parameters(:,5),parameters(:,6),[],values(end,:))
 
 figure(6)
 colormap(customColormap)
-scatter(parameters(:,5),parameters(:,6),[],values(end,:))
+scatter(parameters(:,7),parameters(:,8),[],values(end,:))
 
 figure(7)
 colormap(customColormap)
-scatter(parameters(:,3),parameters(:,4),[],values(end,:))
+scatter(parameters(:,9),parameters(:,10),[],values(end,:))
 
 figure(8)
 colormap(customColormap)
-scatter(parameters(:,1),parameters(:,2),[],values(end,:))
+scatter(parameters(:,11),parameters(:,12),[],values(end,:))
 
-
+figure(9)
+colormap(customColormap)
+scatter(parameters(:,13),parameters(:,14),[],values(end,:))
 
 %% DEVELOPMENT of histogram
+figure(10)
+hist(values(end,:))
 
-
-
-
-
+%% 
+figure(11)
+gplotmatrix(parameters,[])
 
 
 

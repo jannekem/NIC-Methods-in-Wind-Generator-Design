@@ -14,7 +14,7 @@ survivals_size = round(population_size/3);
 mutation_chance = 0.05;
 crossover_chance = 0.7;
 iter_count = 1;
-iter_limit = 100;
+iter_limit = 1000;
 iter_converged = 200;
 iter_converged_count = 0;
 condition_fitness = inf;
@@ -74,20 +74,17 @@ while(iter_count <= iter_limit)
     
     % Calculating fitness:
     
-    parfor i = 1:population_size
+    for i = 1:population_size
         [objectives, constraints] = design_PMSM_generator(population(i,:)');
         fitness(i) = evalobjects(objectives,constraints);     % Fitness function
-    end
-    
-    for i = 1:population_size
-       if(fitness(i) > elite_fitness(iter_count))
+        if(fitness(i) > elite_fitness(iter_count))
             elite_idx = i;
             elite_fitness(iter_count) = fitness(i);
         end
         
         if(fitness(i) < worst_fitness)
             worst_fitness = fitness(i);
-        end 
+        end
     end
     
     elite = population(elite_idx,:);

@@ -100,27 +100,59 @@ scatter(parameters(:,13),parameters(:,14),[],values(end,:))
 %% DEVELOPMENT of histogram
 
 hf = figure('color','white');
+set(hf,'Position',[100 100 1000 800])
 hold on
 
-x = values(1,:);
+%x = values(1,:);
 y = values(2,:);
-ht = hist(x,20);
-set(ht,'XDataSource','x')
-set(ht,'YDataSource','y')
+[nelements, centers] = hist(y,20);
+ht = bar(centers,nelements);
+set(ht,'YDataSource','nelements')
+set(ht,'XDataSource','centers')
 
 drawnow
 
-for t = 1:length(values,1)
-    pause(0.05)
-    x = values(t,:);
+for t = 2:10:length(values)
+    pause(0.001)
+    %x = values(t,:);
+    y = values(t,:);
+    [nelements, centers] = hist(y,20);
     refreshdata(hf,'caller');
+    axis([0.98 0.99 0 300])
     drawnow
 end
 
 %% 
+hf = figure('color','white');
+set(hf,'Position',[100 100 1000 800])
+hold on
+
+x = rand(length(values(1,:)),1);
+y = values(2,:);
+[nelements, centers] = hist(y,20);
+ht = scatter(y,x);
+set(ht,'YDataSource','x')
+set(ht,'XDataSource','y')
+
+drawnow
+
+for t = 2:10:length(values)
+    pause(0.001)
+    y = values(t,:);
+    refreshdata(hf,'caller');
+    axis([0.98 0.99 0 1])
+    drawnow
+end
+
+%%
+
+
 figure(11)
 gplotmatrix(parameters,[])
 
+set(gcf,'Visible','off');
+plot((1:10),(1:10).^2);
+print -dpng c:\chris.png  % or whatever your print command is
 
 
 

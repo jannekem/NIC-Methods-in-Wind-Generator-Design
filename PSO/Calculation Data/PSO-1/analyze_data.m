@@ -102,7 +102,7 @@ scatter(parameters(:,13),parameters(:,14),[],values(end,:))
 hf = figure('color','white');
 set(hf,'Position',[100 100 1000 800])
 hold on
-
+%%
 %x = values(1,:);
 y = values(2,:);
 [nelements, centers] = hist(y,20);
@@ -126,7 +126,7 @@ end
 hf = figure('color','white');
 set(hf,'Position',[100 100 1000 800])
 hold on
-
+%%
 x = rand(length(values(1,:)),1);
 y = values(2,:);
 [nelements, centers] = hist(y,20);

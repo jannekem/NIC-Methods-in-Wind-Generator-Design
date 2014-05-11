@@ -98,8 +98,24 @@ colormap(customColormap)
 scatter(parameters(:,13),parameters(:,14),[],values(end,:))
 
 %% DEVELOPMENT of histogram
-figure(10)
-hist(values(end,:))
+
+hf = figure('color','white');
+hold on
+
+x = values(1,:);
+y = values(2,:);
+ht = hist(x,20);
+set(ht,'XDataSource','x')
+set(ht,'YDataSource','y')
+
+drawnow
+
+for t = 1:length(values,1)
+    pause(0.05)
+    x = values(t,:);
+    refreshdata(hf,'caller');
+    drawnow
+end
 
 %% 
 figure(11)

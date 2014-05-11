@@ -98,15 +98,33 @@ colormap(customColormap)
 scatter(parameters(:,13),parameters(:,14),[],values(end,:))
 
 %% DEVELOPMENT of histogram
-figure(10)
-hist(values(end,:))
+
+hf = figure('color','white');
+hold on
+
+%x = values(1,:);
+y = values(2,:);
+ht = hist(y,20);
+%set(ht,'XDataSource','x')
+set(ht,'YDataSource','y')
+
+drawnow
+
+for t = 2:length(values)
+    pause(0.01)
+    %x = values(t,:);
+    y = values(t-1,:);
+    refreshdata(hf,'caller');
+    drawnow
+end
 
 %% 
 figure(11)
 gplotmatrix(parameters,[])
 
-
-
+set(gcf,'Visible','off');
+plot((1:10),(1:10).^2);
+print -dpng c:\chris.png  % or whatever your print command is
 
 
 

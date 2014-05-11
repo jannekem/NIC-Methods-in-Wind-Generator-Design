@@ -67,7 +67,7 @@ plot(mv+stdv,'k','Linewidth',2.5);
 plot(mv-stdv,'k','Linewidth',2.5);
 hold off;
 xlabel('iteration');ylabel('efficiency');
-%axis([0 10 0 30])
+axis([0 4000 0.97 0.985 ])
 
 %% PLOT best values
 
@@ -80,7 +80,7 @@ customColormap = customColormap./255;
 
 figure(3)
 colormap(customColormap)
-scatter(parameters(:,1),parameters(:,2),[],out(end,:))
+scatter(parameters(:,1),parameters(:,2),[],values(end,:))
 %xlabel('Relative slot opening')
 %ylabel('Relative slot width')
 
@@ -95,15 +95,15 @@ scatter(parameters(:,5),parameters(:,6),[],values(end,:))
 
 figure(6)
 colormap(customColormap)
-scatter(parameters(:,7),parameters(:,6),[],values(end,:))
+scatter(parameters(:,7),parameters(:,8),[],values(end,:))
 
 figure(7)
 colormap(customColormap)
-scatter(parameters(:,3),parameters(:,4),[],values(end,:))
+scatter(parameters(:,9),parameters(:,10),[],values(end,:))
 
 figure(8)
 colormap(customColormap)
-scatter(parameters(:,1),parameters(:,2),[],values(end,:))
+scatter(parameters(:,11),parameters(:,12),[],values(end,:))
 
 figure(9)
 colormap(customColormap)

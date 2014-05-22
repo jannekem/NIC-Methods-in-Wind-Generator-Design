@@ -20,6 +20,7 @@
 \usepackage[english]{babel}
 \usepackage{lettrine} % The lettrine is the first enlarged letter at the beginning of the text
 \usepackage{paralist} % Used for the compactitem environment which makes bullet points with less space between them
+\usepackage{longtable}
 
 \usepackage{abstract} % Allows abstract customization
 \renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
@@ -178,9 +179,9 @@ We performed many and more calculations which to analyze. For each algorithm we 
 As noted previously, we only considered the single goal optimization problem of the efficiency. A more practical result could be achieved if the optimization goal was altered in a way that the other generator properties are taken into account. Initially, we tried this approach by setting certain weights to the parameters but the results didn't have any real meaning and they weren't very easy to interpret. 
 
 TEE SAMA TAULUKKO KUIN NIISSÄ SLAIDEISSA (GENERAATTORIEN VERTAILU)
-LAITA KUVAT APPENDIXIIN
+LAITA KUVAT APPENDIXIIN MUTTA SELITÄ TULOKSISTA TÄSSÄ
 
-A better way of doing this multiple goal optimization could be setting some restrictions to the desired properties. As was seen in the comparison of the best generators the one that we got from the PSO algorithm was almost twice the price of the GA version. We could simultaneously optimize the generator efficiency and the power factor by simply taking the sum of these properties. For the other parameters we could set some desired conditions that should be fulfilled and give some penalty if the limits are exceeded. For example, we could set the maximum allowed cost to be 7M and the minimum torque density to 11.
+A better way of doing this multiple goal optimization could be setting some restrictions to the desired properties. As was seen in the comparison of the best generators the one that we got from the PSO algorithm was almost twice the price of the GA version. We could simultaneously optimize the generator efficiency and the power factor by simply taking the sum of these properties. For the other parameters we could set some desired conditions that should be fulfilled and give some penalty if the limits are exceeded. For example, we could set the maximum allowed cost to be 7M and the minimum torque density to 11. We did not have the time to implement this.
 
 
 \section{Conclusions and Further Research}
@@ -188,7 +189,11 @@ A better way of doing this multiple goal optimization could be setting some rest
 
 
 \section{Time and Teamwork Management}
-As mentioned before we had some challenges allocating time for the project. The deadlines for the different phases have been delayed. Here we summarize the time usage up to date.
+The initial project plan had quite amibitous goals for the time management. Due to many reasons they were delayed to the official course deadlines. For example in March and April the project was on halt for almost 4 weeks because of other more urgent assignments.
+
+The workload wasn't evenly distributed because Janne handled the cluster computing in addition to his own algorithm design. Also the available data had to be analyzed so that the feasibility of the results could be verified. This analysis later became the core of the achieved results. Otherwise there were no problems distributing the work as the algorithms required approximately the same amount of work. There is also the fact that everything could be fine tuned more and more but at some point it has to be decided that this is good enough.
+
+The overall time usage for Janne was 107.5 hours and KKKKKKKKKKKKKKKKK hours for Eero. The time usage can be seen in more detail in Appendix B.
 
 
 
@@ -212,5 +217,108 @@ Obitko, M., \emph{Introduction to genetic algorithms}, Hochschule f\"ur Technik 
 
 
 \end{multicols}
+\newpage
+\appendix
+\section{Result comparison}
+
+\newpage
+\section{Time management}
+\begin{longtable}{ | l | l | p{10cm} | }
+\hline
+	lectures & 12 & \  \\ \hline
+	\  & \  & \  \\ \hline
+	\textbf{Janne} & \textbf{total} & 95.5 \\ \hline
+	\ & \ total + lectures & 107.5  \\ \hline
+	date & time (h) & description \\ \hline
+	20.1.2014 & 2 & Familiarization with the project and exploring different algorithms \\ \hline
+	21.1.2014 & 1 & Checking the Matlab files \\ \hline
+	24.1.2014 & 2 & Project planning \\ \hline
+	25.1.2014 & 2.5 & Updating the plan to LaTeX \\ \hline
+	30.1.2014 & 0.5 & First meeting \\ \hline
+	15.2.2014 & 1 & Reading about the PSO algorithm \\ \hline
+	17.2.2014 & 7 & Implementing PSO \\ \hline
+	17.2.2014 & 2 & Studying parallelization \\ \hline
+	18.2.2014 & 1 & Figuring out performance issues \\ \hline
+	24.2.2014 & 4 & Matlab movie capture, wondering why the algorithm doesn't work \\ \hline
+	2.3.2014 & 5 & Intermediate report writing \\ \hline
+	2.3.2014 & 1.5 & Troubleshooting with simpler algorithm \\ \hline
+	3.3.2014 & 1 & Preparing presentation slides \\ \hline
+	3.3.2014 & 1 & Velocity clamping \\ \hline
+	3.3.2014 & 1 & Finding suitable software to capture video from screen \\ \hline
+	4.3.2014 & 1 & Intermediate report writing \\ \hline
+	4.3.2014 & 0.5 & Video editing and upload to YouTube \\ \hline
+	15.3.2014 & 1 & Started a clean attempt of PSO in order to improve code readability \\ \hline
+	15.3.2014 & 1 & How  to apply a function only to a subset of matrix elements \\ \hline
+	16.3.2014 & 1 & Wondering one particle immobility \\ \hline
+	16.3.2014 & 1 & Found the reason for the problem, there was a typo in the bestidx parameter \\ \hline
+	17.3.2014 & 3 & Improve plotting, run simulation with large swarm, parametrize velocity calculation \\ \hline
+	17.3.2014 & 1 & Print text to console, run multiple simulations \\ \hline
+	18.3.2014 & 1 & Explore multidimensional data visualization \\ \hline
+	19.3.2014 & 2 & Gather data for multiple runs of PSO \\ \hline
+	22.3.2014 & 1 & Found out that the data from the 5 hour run was not saved. Started new calculation runs. \\ \hline
+	23.3.2014 & 1.5 & Write script to analyze the optimal parameter distributions. Find info about the computing facilities in Aalto. \\ \hline
+	23.3.2014 & 0.5 & Apply for a Triton account. \\ \hline
+	23.3.2014 & 1 & Reading about various inertia handling methods. \\ \hline
+	24.3.2014 & 1 & Ask for Triton account, discuss with Eero about the project. \\ \hline
+	25.3.2014 & 1.5 & Read Triton manuals and about Bash scripting \\ \hline
+	26.3.2014 & 1.5 & Read about SLURM and sbatch, project discussion \\ \hline
+	26.3.2014 & 1.5 & Implementing PSO to be used in Triton \\ \hline
+	26.3.2014 & 1.5 & Experiment with Bash scripting, script .mat file upload from Triton to Kosh \\ \hline
+	26.3.2014 & 1 & Run tests and benchmark on home computer. Run hundred iterations on cluster. \\ \hline
+	26.3.2014 & 1 & Every calculation produced the same results, set the random number seed manually. Start new calculation with 200 tasks. \\ \hline
+	27.3.2014 & 0.5 & Basic analyzation of the data. \\ \hline
+	22.4.2014 & 0.5 & Telling Eero what kind of function he should make so that it could be run in Triton, fixed random number generation \\ \hline
+	23.4.2014 & 2 & Documentation \\ \hline
+	23.4.2014 & 0.5 & For some reason the PSO\_SLURM folder was deleted. Recovered missing files. \\ \hline
+	24.4.2014 & 0.5 & Fixed documentation \\ \hline
+	24.4.2014 & 1.5 & Run simulations for random inertia \\ \hline
+	25.4.2014 & 1 & Some shell wizardry to find the failed (old) results and remove them as I forgot to clean the folder before running the job \\ \hline
+	26.4.2014 & 1 & What to do with the data and is the collected data sufficient? \\ \hline
+	26.4.2014 & 0.5 & Set up SSH tunneling so that the file transfering is easier \\ \hline
+	26.4.2014 & 1 & Prepare and run new batch jobs \\ \hline
+	26.4.2014 & 1 & The previous run was erroneous, made some modifications and started new batch jobs \\ \hline
+	27.4.2014 & 0.5 & Check the simulation results \\ \hline
+	29.4.2014 & 1 & Lunch discussion with Eero about the \\ \hline
+	29.4.2014 & 0.5 & Write e-mail \\ \hline
+	29.4.2014 & 1 & Prepare and run the GA simulations \\ \hline
+	2.5.2014 & 2 & Change the fitness function to efficiency only, remove the saving of the development of the swarm from PSO\_function, test, start new calculation in cluster \\ \hline
+	2.5.2014 & 2 & Checking results and plotting plots \\ \hline
+	9.5.2014 & 1 & Prepare and run GA with updated fitness function \\ \hline
+	9.5.2014 & 0.5 & Start making presentation slides \\ \hline
+	10.5.2014 & 1 & Changed GA to utilize parfor and started new runs. The previous run had only 1000 iterations and the convergence limit of 200. \\ \hline
+	10.5.2014 & 1 & Prepare slides and make changes so that the values are stored to the disk after always after certain amount of iterations instead of at the end. \\ \hline
+	10.5.2014 & 1 & Fight with the batch jobs \\ \hline
+	10.5.2014 & 1 & Data analysis \\ \hline
+	10.5.2014 & 3 & Visualizations and making slides \\ \hline
+	10.5.2014 & 0.5 & Check and upload last GA runs \\ \hline
+	11.5.2014 & 2 & Fighting with network problems \\ \hline
+	11.5.2014 & 3 & Development of PSO fitness visualization \\ \hline
+	11.5.2014 & 2 & Prepare slides \\ \hline
+	12.5.2014 & 1.5 & Prepare slides \\ \hline
+	12.5.2014 & 0.5 & Run GA, then run it again \\ \hline
+	22.5.2014 & 2.5 & Documentation \\ \hline
+	
+
+\end{longtable}
+
+\begin{tabular}{|l|l|l|}
+\hline
+	\textbf{Eero} & \textbf{total} & \textbf{62.5} \\ \hline
+	total + lectures & 71.5 & \  \\ \hline
+	2.3.2014 & 32 & intermediate report total \\ \hline
+	14.3.2014 & 3 & Trouoble with the sum function, calculating fitness \\ \hline
+	17.3.2014 & 2 & Fine-tuning the selection process \\ \hline
+	17.3.2014 & 2.5 & Fixed a bug with crossover, first working model \\ \hline
+	24.3.2014 & 1 & Miscellaneous discussion (including Triton) \\ \hline
+	26.3.2014 & 1.5 & Modifying GA to handle negative fitness values \\ \hline
+	28.4.2014 & 6 & Huge revamp to reduce convergence to single solution \\ \hline
+	29.4.2014 & 1 & Lunch with Janne, discussion about data analysis \\ \hline
+	10.5.2014 & 4 & Mutation chance analysis \\ \hline
+	11.5.2014 & 6 & Mutation chance analysis, average fitness analysis \\ \hline
+	12.5.2014 & 1 & Tweaking mutation chance, one more iteration on Triton \\ \hline
+	12.5.2014 & 2.5 & Making slides \\ \hline
+\end{tabular}
+
+
 
 \end{document}

@@ -98,6 +98,7 @@ Our optimization problem is a black box model of a wind turbine generator develo
 	
 An ideal generator would produce exactly 3 MW power and have a maximised torque density, minimum weight, high efficiency, high power factor and minimised costs. All the goals can't be optimised simultaneously as they require different parameter combinations. The optimal solution is a compromise where improving some value would deteriorate the others.
 
+**** **** **** TÄHÄN JOTAIN SELITYSTÄ **** **** ****
 %------------------------------------------------
 
 \section{Particle Swarm Optimization}
@@ -172,7 +173,19 @@ The positions and velocities are updated until a set criterion is fulfilled. The
 	
 	
 \section{Analyzing the Results}
-We performed many and more calculations which to analyze. For each algorithm we selected the goal of 10,000 iterations as a baseline. The time allocated for the task was four hours with a grace period of approximately one hour. 
+We performed many and more calculations which to analyze. For each algorithm we selected the goal of 10,000 iterations as a baseline. The time allocated for the task was four hours with a grace period of approximately one hour. In the analysis we only used the base versions of the algorithms. Therefore the different velocity 
+
+As noted previously, we only considered the single goal optimization problem of the efficiency. A more practical result could be achieved if the optimization goal was altered in a way that the other generator properties are taken into account. Initially, we tried this approach by setting certain weights to the parameters but the results didn't have any real meaning and they weren't very easy to interpret. 
+
+TEE SAMA TAULUKKO KUIN NIISSÄ SLAIDEISSA (GENERAATTORIEN VERTAILU)
+LAITA KUVAT APPENDIXIIN
+
+A better way of doing this multiple goal optimization could be setting some restrictions to the desired properties. As was seen in the comparison of the best generators the one that we got from the PSO algorithm was almost twice the price of the GA version. We could simultaneously optimize the generator efficiency and the power factor by simply taking the sum of these properties. For the other parameters we could set some desired conditions that should be fulfilled and give some penalty if the limits are exceeded. For example, we could set the maximum allowed cost to be 7M and the minimum torque density to 11.
+
+
+\section{Conclusions and Further Research}
+
+
 
 \section{Time and Teamwork Management}
 As mentioned before we had some challenges allocating time for the project. The deadlines for the different phases have been delayed. Here we summarize the time usage up to date.

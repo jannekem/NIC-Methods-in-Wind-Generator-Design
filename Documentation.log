@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.17)  24 APR 2014 20:56
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.17)  11 MAY 2014 20:07
 entering extended mode
 **Documentation.tex
 (I:\ohjelmointi\GitHub\GA-DA-octo-adventure\Documentation.tex
@@ -578,7 +578,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 203.
 Here is how much of TeX's memory you used:
  9053 strings out of 493921
  139930 string characters out of 3144875
- 347062 words of memory out of 3000000
+ 348062 words of memory out of 3000000
  11992 multiletter control sequences out of 15000+200000
  61407 words of font info for 226 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
@@ -591,7 +591,7 @@ rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/fpl/fplrc8a.pfb><C:/Program Fi
 les (x86)/MiKTeX 2.9/fonts/type1/urw/palatino/uplb8a.pfb><C:/Program Files (x86
 )/MiKTeX 2.9/fonts/type1/urw/palatino/uplr8a.pfb><C:/Program Files (x86)/MiKTeX
  2.9/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on Documentation.pdf (4 pages, 116201 bytes).
+Output written on Documentation.pdf (4 pages, 116442 bytes).
 PDF statistics:
  138 PDF objects out of 1000 (max. 8388607)
  22 named destinations out of 1000 (max. 500000)

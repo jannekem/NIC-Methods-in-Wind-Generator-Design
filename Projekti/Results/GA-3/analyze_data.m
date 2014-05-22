@@ -109,6 +109,28 @@ figure(9)
 colormap(customColormap)
 scatter(parameters(:,13),parameters(:,14),[],values(end,:))
 
+%%
+hf = figure('color','white');
+set(hf,'Position',[100 100 1000 800])
+hold on
+%%
+x = rand(length(values(1,:)),1);
+y = values(2,:);
+[nelements, centers] = hist(y,20);
+ht = scatter(y,x);
+set(ht,'YDataSource','x')
+set(ht,'XDataSource','y')
+
+drawnow
+
+for t = 2:10:length(values)
+    pause(0.001)
+    y = values(t,:);
+    refreshdata(hf,'caller');
+    axis([0.98 0.99 0 1])
+    drawnow
+end
+
 
 %%
 figure(10)

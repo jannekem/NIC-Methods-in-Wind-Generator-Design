@@ -55,8 +55,12 @@ hold off;
 xlabel('iteration');ylabel('efficiency');
 axis([0 10000 0.98 0.99])
 
-%%
-parameters(330,12)
+
+%% FIND best
+max_val = max(max(values));
+x = find(bestvalues == max(bestvalues));
+params = parameters(x,:);
+
 
 %% PLOT best values
 customColormap=[];

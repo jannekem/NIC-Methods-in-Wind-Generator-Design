@@ -1,4 +1,3 @@
-%% 
 clear all
 bestvalues=[];  % best value of each run
 parameters=[];  % best parameters of each run
@@ -10,12 +9,15 @@ failures = 0;
 
 for index = 1:iterations
     % read output from the jobs
-    filename = strcat( 'genetic-output-', int2str( index ) );
+    filename = strcat( 'output-', int2str( index ) );
     try
+        if index == 97
+            continue % skip the erroneous run
+        end            
         load ( filename );
-        parameters = [ parameters; elite ];
-        bestvalues = [ bestvalues, max(elite_fitness) ];
-        values = [values, elite_fitness'];
+        parameters = [ parameters; params ];
+        bestvalues = [ bestvalues, bestval ];
+        values = [values, bestvals];
     catch
         disp ( sprintf ( 'FAILURE no file %s', filename ) );
         failures = failures + 1;
@@ -38,9 +40,9 @@ out(l) = A(ii(l));
 out = max(0,out);
 values = out;
 
-%% (ii) Compute mean consumption
+%% MEAN
 M = length(bestvalues);
-N = length(elite_fitness);
+N = length(bestvals);
 stdv=zeros(1,N);
 mv = zeros(1,N);
 for indn = 1:N
@@ -57,8 +59,6 @@ for ind = 1:70
     customColormap = [customColormap; val,val,val];
 end
 customColormap = customColormap./255;
-
-
 set(gca,'NextPlot','replacechildren','ColorOrder',customColormap)
 plot(values);
 hold on;
@@ -67,23 +67,25 @@ plot(mv+stdv,'k','Linewidth',2.5);
 plot(mv-stdv,'k','Linewidth',2.5);
 hold off;
 xlabel('iteration');ylabel('efficiency');
-axis([0 4000 0.97 0.985 ])
+axis([0 100000 0.98 0.99])
+
+%% Troublesome parameters (result 5.3369e+11)
+parameters(97,12)
 
 %% PLOT best values
-
 customColormap=[];
 for ind = 1:50
     val = 250 - ind*5;
     customColormap = [customColormap; val,val,val];
 end
 customColormap = customColormap./255;
+colormap(customColormap)
 
 figure(3)
 colormap(customColormap)
 scatter(parameters(:,1),parameters(:,2),[],values(end,:))
 %xlabel('Relative slot opening')
 %ylabel('Relative slot width')
-
 
 figure(4)
 colormap(customColormap)
@@ -109,7 +111,32 @@ figure(9)
 colormap(customColormap)
 scatter(parameters(:,13),parameters(:,14),[],values(end,:))
 
+%% DEVELOPMENT of histogram
+
+hf = figure('color','white');
+set(hf,'Position',[100 100 1000 800])
+hold on
 %%
+%x = values(1,:);
+y = values(2,:);
+[nelements, centers] = hist(y,20);
+ht = bar(centers,nelements);
+set(ht,'YDataSource','nelements')
+set(ht,'XDataSource','centers')
+
+drawnow
+
+for t = 2:10:length(values)
+    pause(0.001)
+    %x = values(t,:);
+    y = values(t,:);
+    [nelements, centers] = hist(y,20);
+    refreshdata(hf,'caller');
+    axis([0.98 0.99 0 300])
+    drawnow
+end
+
+%% 
 hf = figure('color','white');
 set(hf,'Position',[100 100 1000 800])
 hold on
@@ -131,7 +158,21 @@ for t = 2:10:length(values)
     drawnow
 end
 
-
 %%
-figure(10)
-hist(values(end,:))
+
+
+figure(11)
+gplotmatrix(parameters,[])
+
+set(gcf,'Visible','off');
+plot((1:10),(1:10).^2);
+print -dpng c:\chris.png  % or whatever your print command is
+
+
+
+
+
+
+
+
+

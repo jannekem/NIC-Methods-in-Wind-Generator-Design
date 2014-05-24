@@ -3,7 +3,7 @@
 % Compile the document to PDF by command 'pdflatex model.tex' in the terminal. The command must be run twice for the references in the text to be correct.
 
 \documentclass[twoside]{article}
-
+\usepackage{graphicx}
 \usepackage{lipsum} % Package to generate dummy text throughout this template
 
 \usepackage[sc]{mathpazo} % Use the Palatino font
@@ -141,7 +141,6 @@ The positions and velocities are updated until a set criterion is fulfilled. The
 	\begin{enumerate} \itemsep1pt \parskip0pt \parsep0pt
 	\item New Population
 	\item Fitness evaluation
-	\item Testing whether the solution is satisfactory
 	\item Creating a new population
 	\item Looping from step 2.
 	\end{enumerate}
@@ -149,15 +148,15 @@ The positions and velocities are updated until a set criterion is fulfilled. The
 	In step 1, a random new population is generated.  Population size may vary, but a too large population will lead to unacceptable waste of calculating time and offers very little in return when compared to smaller population sizes. A good population size is around 20-40 candidates.
 
 
-	In steps 2 and 3, the fitness of each candidate is evaluated.  Fitness describes how well the candidate satisfies our criteria.Our fitness evaluation is based on the simulation model provided to us by VTT.  If the best candidate passes the pre -set goal in terms of  fitness, the  looping is stopped and algorithm is complete.
+	In step 2, the fitness of each candidate is evaluated.  Fitness describes how well the candidate satisfies our criteria.Our fitness evaluation is based on the simulation model provided to us by VTT.
 	
-	In step 4 a new population is created. First, 10 survivals are  selected based on "pie chart roulette", that is, most fit candidates are most likely to survive, but the process is also based on randomness. Next, the survivals produce offspring, and stand a chance to create corssovers with each other. This means that the survivals' offspring inherit attributes from both parents. The best candidate is passed on to the next generation as is. This is called elitism. Finally, a  random, low-chance, mutation may occur. In our case this means that a random parameter  of a random  candidate will be incremented or decremented by a small amount.
+	In step 3 a new population is created. First, 10 survivals are  selected based on "pie chart roulette", that is, most fit candidates are most likely to survive, but the process is also based on randomness. Next, the survivals produce offspring, and stand a chance to create corssovers with each other. This means that the survivals' offspring inherit attributes from both parents. The best candidate is passed on to the next generation as is. This is called elitism. Finally, a  random, low-chance, mutation may occur. In our case this means that a random parameter  of a random  candidate will be incremented or decremented by a small amount.
 	
-	The methods used in step 4 and how often they occur are based on empirical evidence. Good  chance for crossover is determined to be around 0.7, for example. Mutation chance needs to be low, or else the process loses it's properties and becomes essentially a random-walk process. However, a low mutation chance is required to make the system evolve.
+	The methods used in step 3 and how often they occur are based on empirical evidence. Good  chance for crossover is determined to be around 0.7, for example. Mutation chance needs to be low, or else the process loses it's properties and becomes essentially a random-walk process. However, a low mutation chance is required to make the system evolve.
 	
-	Finally, in step 5 the process is repeated from step 2. The process is repeated maximum in our case maximum of 100 times, to make the calculations run smoothly and in reasonable timeframe.
+	The simulation results show that the used genetic algorithm managed to find a reasonable good result in practical timeframe. However, the algorithm suffered from 2 drawbacks. Firstly, the algorithm was quite slow when compared to the PSO algorithm. This is probably due to selection process, which requires multiple for-loops at each iteration. Additionally, parallel for loops were not used in the GA code, so the performance could probably have been improved without influencing the overall functionality of the algorithm. All in all, with the given simulation model, the PSO was almost 10 times faster than GA.
 	
-	Currently the program code for the algorithm is complete, but fails to compile, due to errors with the provided simulation model. Further evaluation of the selected methods and parameters, such as crossover and mutation chance, are needed. After the code is complete, the results are analyzed and parameters tuned for best possible results.
+	The second drawback with GA was that the solutions weren't quite as good as the ones found by PSO. We are quite sure this had to do with the roulette-wheel selection used in GA. If the fitness values of 2 diffirent candidates are very close to each other, say 0.978 and 0.977, the diffirence in fitness is negligible and the randomness of the "roulette-wheel" takes over. What happens is the solutions become basicly a random-walk process as long as the fitness values don't significantly differ from each other. Therefore the algorithm with this selection method is poorly suited for high end optimization and fine tuning. We could have tested diffirent selection methods, but didn't have time to implement them in the scope of this project work.
 	
 	
 	\section{Computing in the Cluster}
@@ -174,12 +173,11 @@ The positions and velocities are updated until a set criterion is fulfilled. The
 	
 	
 \section{Analyzing the Results}
-We performed many and more calculations which to analyze. For each algorithm we selected the goal of 10,000 iterations as a baseline. The time allocated for the task was four hours with a grace period of approximately one hour. In the analysis we only used the base versions of the algorithms. Therefore the different velocity 
+We performed many and more calculations which to analyze. For each algorithm we selected the goal of 10,000 iterations as a baseline. The time allocated for the task was four hours with a grace period of approximately one hour. In the analysis we only used the base versions of the algorithms. 
 
 As noted previously, we only considered the single goal optimization problem of the efficiency. A more practical result could be achieved if the optimization goal was altered in a way that the other generator properties are taken into account. Initially, we tried this approach by setting certain weights to the parameters but the results didn't have any real meaning and they weren't very easy to interpret. 
 
-TEE SAMA TAULUKKO KUIN NIISSÄ SLAIDEISSA (GENERAATTORIEN VERTAILU)
-LAITA KUVAT APPENDIXIIN MUTTA SELITÄ TULOKSISTA TÄSSÄ
+The final results of the simulations are shown in the appendix section of this document. The results show that the 2 algorithms find their solutions in roughly the same areas. Due to GA's mutation element, the results found by GA are much more spread our when compared to PSO. As mentioned earlier, the GA turns basicly into a random walk process with parameters that don't have a major impact on the fitness. This is especially obvious with parameters 13 and 14, which seem to have very little impact on the generator efficiency.
 
 A better way of doing this multiple goal optimization could be setting some restrictions to the desired properties. As was seen in the comparison of the best generators the one that we got from the PSO algorithm was almost twice the price of the GA version. We could simultaneously optimize the generator efficiency and the power factor by simply taking the sum of these properties. For the other parameters we could set some desired conditions that should be fulfilled and give some penalty if the limits are exceeded. For example, we could set the maximum allowed cost to be 7M and the minimum torque density to 11. We did not have the time to implement this.
 
@@ -191,9 +189,9 @@ A better way of doing this multiple goal optimization could be setting some rest
 \section{Time and Teamwork Management}
 The initial project plan had quite amibitous goals for the time management. Due to many reasons they were delayed to the official course deadlines. For example in March and April the project was on halt for almost 4 weeks because of other more urgent assignments.
 
-The workload wasn't evenly distributed because Janne handled the cluster computing in addition to his own algorithm design. Also the available data had to be analyzed so that the feasibility of the results could be verified. This analysis later became the core of the achieved results. Otherwise there were no problems distributing the work as the algorithms required approximately the same amount of work. There is also the fact that everything could be fine tuned more and more but at some point it has to be decided that this is good enough.
+The workload wasn't evenly distributed because Janne handled the cluster computing in addition to his own algorithm design. Also the available data had to be analyzed so that the feasibility of the results could be verified. This analysis later became the core of the achieved results. Otherwise there were no problems distributing the work as the algorithms required approximately the same amount of work. We could have spent much more time improving both algorithms, but had to keep the time spent on reasonable levels, keeping the scope of the project in mind.
 
-The overall time usage for Janne was 107.5 hours and KKKKKKKKKKKKKKKKK hours for Eero. The time usage can be seen in more detail in Appendix B.
+The overall time usage for Janne was 107.5 hours and 77.5 hours for Eero. These are conservative estimates, as not every task was included in the calculations and some tasks probably took a bit longer than was reported. The time usage can be seen in more detail in Appendix B.
 
 
 
@@ -220,7 +218,9 @@ Obitko, M., \emph{Introduction to genetic algorithms}, Hochschule f\"ur Technik 
 \newpage
 \appendix
 \section{Result comparison}
-
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{results1.png}
+\newpage
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{results2.png}
 \newpage
 \section{Time management}
 \begin{longtable}{ | l | l | p{10cm} | }
@@ -303,8 +303,8 @@ Obitko, M., \emph{Introduction to genetic algorithms}, Hochschule f\"ur Technik 
 
 \begin{tabular}{|l|l|l|}
 \hline
-	\textbf{Eero} & \textbf{total} & \textbf{62.5} \\ \hline
-	total + lectures & 71.5 & \  \\ \hline
+	\textbf{Eero} & \textbf{total} & \textbf{64.5} \\ \hline
+	total + lectures & 77.5 & \  \\ \hline
 	2.3.2014 & 32 & intermediate report total \\ \hline
 	14.3.2014 & 3 & Trouoble with the sum function, calculating fitness \\ \hline
 	17.3.2014 & 2 & Fine-tuning the selection process \\ \hline
@@ -317,6 +317,7 @@ Obitko, M., \emph{Introduction to genetic algorithms}, Hochschule f\"ur Technik 
 	11.5.2014 & 6 & Mutation chance analysis, average fitness analysis \\ \hline
 	12.5.2014 & 1 & Tweaking mutation chance, one more iteration on Triton \\ \hline
 	12.5.2014 & 2.5 & Making slides \\ \hline
+	23.5.2014 & 4 & Documentation \\ \hline
 \end{tabular}
 
 

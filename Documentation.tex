@@ -185,7 +185,7 @@ The positions and velocities are updated until a set criterion is fulfilled. The
 	
 	
 \section{Analyzing the Results}
-We performed many and more calculations which to analyze. For each algorithm we selected the goal of 10,000 iterations as a baseline. The time allocated for the task was four hours with a grace period of approximately one hour. In the analysis we only used the base versions of the algorithms. 
+We performed many and more calculations which to analyze. For each algorithm we selected the goal of 10,000 iterations as a baseline. The time allocated for the task was four hours with a grace period of approximately one hour. In the analysis we only used the base versions of the algorithms. Most of the PSO runs managed to make it to the 10,000th iteration in 4 hours. Most GA runs only made it to the 1,000th iteration, with no run exceeding the 3,000th iteration. This suggests that the used PSO algorithm was atleast 10 times faster than the GA. In addition to the 10,000 iteration runs, a run with 100,000 iterations and 48 hour time limit was performed with PSO. The results of these simulations are shown in Appendix A.
 
 As noted previously, we only considered the single goal optimization problem of the efficiency. A more practical result could be achieved if the optimization goal was altered in a way that the other generator properties are taken into account. Initially, we tried this approach by setting certain weights to the parameters but the results didn't have any real meaning and they weren't very easy to interpret. 
 
@@ -197,7 +197,7 @@ A better way of doing this multiple goal optimization could be setting some rest
 
 \section{Conclusions and Further Research}
 
-Here in our project the PSO algorithm outperformed the genetic algorithm in speed even with a larger swarm than the GA population. Also the achieved fitness value was better. This doesn't necessarily mean that the algorithm itself is any worse but perhaps the scripts weren't equally optimized perfomance and parameter wise.
+Here in our project the PSO algorithm outperformed the genetic algorithm in speed even with a larger swarm than the GA population. Also the achieved fitness value was better, probably due to "roulette-wheel"-selection used in GA. Slower speed of the GA doesn't necessarily mean that the algorithm itself is much worse but perhaps the scripts weren't equally optimized perfomance and parameter wise.
 
 The next step would be to try to improve the performance of the genetic algorithm by trying to get rid of as many for-loops as possible. Where possible, the PSO implementation already makes use of the Matlab matrix operations which are proved to be more efficcient when compared to the for-loop. After this a better optimization goal should be formed such that every goal would be optimized in a way. A more advanced approach would be to try to achieve Pareto optimality.
 
@@ -206,7 +206,7 @@ The initial project plan had quite amibitous goals for the time management. Due 
 
 The workload wasn't evenly distributed because Janne handled the cluster computing in addition to his own algorithm design. Also the available data had to be analyzed so that the feasibility of the results could be verified. This analysis later became the core of the achieved results. Otherwise there were no problems distributing the work as the algorithms required approximately the same amount of work. We could have spent much more time improving both algorithms, but had to keep the time spent on reasonable levels, keeping the scope of the project in mind.
 
-The overall time usage for Janne was 109 hours and 77.5 hours for Eero. These are conservative estimates, as not every task was included in the calculations and some tasks probably took a bit longer than was reported. The time usage can be seen in more detail in Appendix B.
+The overall time usage for Janne was 109 hours and 79.5 hours for Eero. These are conservative estimates, as not every task was included in the calculations and some tasks probably took a bit longer than was reported. The time usage can be seen in more detail in Appendix B.
 
 
 
@@ -233,6 +233,22 @@ Obitko, M., \emph{Introduction to genetic algorithms}, Hochschule f\"ur Technik 
 \newpage
 \appendix
 \section{Result comparison}
+
+\begin{figure}[h!]
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{PSO10k.png}
+\caption{PSO algorithm with 10,000 iterations}
+\end{figure}
+\newpage
+\begin{figure}[h!]
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{PSO100k.png}
+\caption{PSO algorithm with 100,000 iterations}
+\end{figure}
+\newpage
+\begin{figure}[h!]
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{GA10k.png}
+\caption{GA with 10,000 iterations}
+\end{figure}
+\newpage
 \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{results1.png}
 \newpage
 \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{results2.png}
@@ -352,6 +368,7 @@ Obitko, M., \emph{Introduction to genetic algorithms}, Hochschule f\"ur Technik 
 	12.5.2014 & 1 & Tweaking mutation chance, one more iteration on Triton \\ \hline
 	12.5.2014 & 2.5 & Making slides \\ \hline
 	23.5.2014 & 4 & Documentation \\ \hline
+	24.5.2014 & 2 & Documentation \\ \hline
 \end{tabular}
 
 

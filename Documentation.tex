@@ -56,6 +56,17 @@
 
 %----------------------------------------------------------------------------------------
 
+\makeatletter
+\newenvironment{tablehere}
+  {\def\@captype{table}}
+  {}
+
+\newenvironment{figurehere}
+  {\def\@captype{figure}}
+  {}
+\makeatother
+
+
 \begin{document}
 
 \maketitle % Insert title
@@ -93,13 +104,12 @@ We acknowledge the computational resources provided by Aalto Science-IT project.
 
 %------------------------------------------------
 
-\section{Structure}
 \section{The Optimization Problem}
 Our optimization problem is a black box model of a wind turbine generator developed by VTT. The model has 14 inputs and 6 outputs. Two of the inputs are integer values and the rest are floating point numbers. In addition to this there are 3 constraints that should be met for the design. 
 	
-An ideal generator would produce exactly 3 MW power and have a maximised torque density, minimum weight, high efficiency, high power factor and minimised costs. All the goals can't be optimised simultaneously as they require different parameter combinations. The optimal solution is a compromise where improving some value would deteriorate the others.
+An ideal generator would produce 3 MW of power and have a maximised torque density, minimum weight, high efficiency, high power factor and minimised costs. All the goals can't be optimised simultaneously as they require different parameter combinations. The optimal solution is a compromise where improving some value would deteriorate the others.
 
-**** **** **** TÄHÄN JOTAIN SELITYSTÄ **** **** ****
+For the constraints $\tau_u$ should be at least 7 mm, the output power should be greater than the target power and the temperature of the permanent magnets should stay below $100\,^{\circ}\mathrm{C}$. If any one of these constraints is violated the generator design should be considered invalid.
 %------------------------------------------------
 
 \section{Particle Swarm Optimization}
@@ -137,7 +147,7 @@ The positions and velocities are updated until a set criterion is fulfilled. The
 
 \section{Genetic Algorithm}
 
-	Genetic Algorithm was implemented by Eero. The algorithm is modeled from Darwin’s theory of evolution. A good overview and discussion on the genetic algorithm is presented in ~\cite{mitchell}. In terms of actual implementation, the Genetic Algorithm is based on 5 different steps ~\cite{obitko}:
+	Genetic Algorithm was implemented by Eero. The algorithm is modeled from Darwin's theory of evolution. A good overview and discussion on the genetic algorithm is presented in ~\cite{mitchell}. In terms of actual implementation, the Genetic Algorithm is based on 5 different steps ~\cite{obitko}:
 	\begin{enumerate} \itemsep1pt \parskip0pt \parsep0pt
 	\item New Population
 	\item Fitness evaluation
@@ -154,7 +164,7 @@ The positions and velocities are updated until a set criterion is fulfilled. The
 	
 	The methods used in step 3 and how often they occur are based on empirical evidence. Good  chance for crossover is determined to be around 0.7, for example. Mutation chance needs to be low, or else the process loses it's properties and becomes essentially a random-walk process. However, a low mutation chance is required to make the system evolve.
 	
-	The simulation results show that the used genetic algorithm managed to find a reasonable good result in practical timeframe. However, the algorithm suffered from 2 drawbacks. Firstly, the algorithm was quite slow when compared to the PSO algorithm. This is probably due to selection process, which requires multiple for-loops at each iteration. Additionally, parallel for loops were not used in the GA code, so the performance could probably have been improved without influencing the overall functionality of the algorithm. All in all, with the given simulation model, the PSO was almost 10 times faster than GA.
+	The simulation results show that the used genetic algorithm managed to find a reasonable good result in practical timeframe. However, the algorithm suffered from 2 drawbacks. Firstly, the algorithm was quite slow when compared to the PSO algorithm. This is probably due to selection process, which requires multiple for-loops at each iteration. Additionally, parallel for loops were not used in the GA code, so the performance could probably have been improved without influencing the overall functionality of the algorithm. The cluster computations were performed with a single core assigned to each task so the performance is comparable in that regard, though. All in all, with the given simulation model, the PSO was almost 10 times faster than GA.
 	
 	The second drawback with GA was that the solutions weren't quite as good as the ones found by PSO. We are quite sure this had to do with the roulette-wheel selection used in GA. If the fitness values of 2 diffirent candidates are very close to each other, say 0.978 and 0.977, the diffirence in fitness is negligible and the randomness of the "roulette-wheel" takes over. What happens is the solutions become basicly a random-walk process as long as the fitness values don't significantly differ from each other. Therefore the algorithm with this selection method is poorly suited for high end optimization and fine tuning. We could have tested diffirent selection methods, but didn't have time to implement them in the scope of this project work.
 	
@@ -164,9 +174,11 @@ The positions and velocities are updated until a set criterion is fulfilled. The
 	
 	The next attempt was to try to utilize the new Aalto servers Brute and Force. However, their Matlab license allows only for 12 parallel workers and as the server CPU cores run only at a bit over 2 GHz the performance was very similar to the home computer.
 	
-	Disappointed with the performance of the available resources we came upon the Aalto Triton computing cluster. Running some 400 compute nodes it was even more than we were looking for.
+	Disappointed with the performance of the available resources we came upon the Aalto Triton computing cluster. Running some 400 compute nodes it was even more than we were looking for. The cluster is in constant heavy use by other researchers so naturally we couldn't use all the possible resources although there was no need for that either.
 	
 	The cluster is running Scientific Linux and the computation tasks are delivered as batch jobs. We had to adapt the Matlab scripts to the requirements of the environment. The algorithms run as functions that among other parameters take the batch ID so that the computation results can be stored to different files. The batch system runs multiple instances of Matlab on different compute nodes simultaneously. 
+	
+		We mainly used the 4 hour limit for our batch jobs as it was the maximum time setting for the task to be assigned to the short partition of the cluster. In the short partition we had a better chance of getting the recources quickly when compared to the main partition. Also the 4 hour limit with a one hour grace period was enough for most runs of the PSO algorithm with 10 000 iterations.
 	
 	After the calculations the saved .mat files are transferred for further analysis. A script reads the output files one by one and then analyzes the results.
 	
@@ -177,21 +189,24 @@ We performed many and more calculations which to analyze. For each algorithm we 
 
 As noted previously, we only considered the single goal optimization problem of the efficiency. A more practical result could be achieved if the optimization goal was altered in a way that the other generator properties are taken into account. Initially, we tried this approach by setting certain weights to the parameters but the results didn't have any real meaning and they weren't very easy to interpret. 
 
-The final results of the simulations are shown in the appendix section of this document. The results show that the 2 algorithms find their solutions in roughly the same areas. Due to GA's mutation element, the results found by GA are much more spread our when compared to PSO. As mentioned earlier, the GA turns basicly into a random walk process with parameters that don't have a major impact on the fitness. This is especially obvious with parameters 13 and 14, which seem to have very little impact on the generator efficiency.
+The final results of the simulations are shown in Appendix A. The results show that the 2 algorithms find their solutions in roughly the same areas. Due to GA's mutation element, the results found by GA are much more spread out when compared to PSO. As mentioned earlier, the GA turns basicly into a random walk process with parameters that don't have a major impact on the fitness. This is especially obvious with parameters 13 and 14, which seem to have very little impact on the generator efficiency.
 
-A better way of doing this multiple goal optimization could be setting some restrictions to the desired properties. As was seen in the comparison of the best generators the one that we got from the PSO algorithm was almost twice the price of the GA version. We could simultaneously optimize the generator efficiency and the power factor by simply taking the sum of these properties. For the other parameters we could set some desired conditions that should be fulfilled and give some penalty if the limits are exceeded. For example, we could set the maximum allowed cost to be 7M and the minimum torque density to 11. We did not have the time to implement this.
+A better way of doing this multiple goal optimization could be setting some restrictions to the desired properties. As was seen in the comparison of the best generators (Appendix A, Table 1) the one that we got from the PSO algorithm was almost twice the price of the GA version. We could simultaneously optimize the generator efficiency and the power factor by simply taking the sum of these properties. For the other parameters we could set some desired conditions that should be fulfilled and give some penalty if the limits are exceeded. For example, we could set the maximum allowed cost to be 7M and the minimum torque density to 11. We did not have the time to implement this.
+
 
 
 \section{Conclusions and Further Research}
 
+Here in our project the PSO algorithm outperformed the genetic algorithm in speed even with a larger swarm than the GA population. Also the achieved fitness value was better. This doesn't necessarily mean that the algorithm itself is any worse but perhaps the scripts weren't equally optimized perfomance and parameter wise.
 
+The next step would be to try to improve the performance of the genetic algorithm by trying to get rid of as many for-loops as possible. Where possible, the PSO implementation already makes use of the Matlab matrix operations which are proved to be more efficcient when compared to the for-loop. After this a better optimization goal should be formed such that every goal would be optimized in a way. A more advanced approach would be to try to achieve Pareto optimality.
 
 \section{Time and Teamwork Management}
 The initial project plan had quite amibitous goals for the time management. Due to many reasons they were delayed to the official course deadlines. For example in March and April the project was on halt for almost 4 weeks because of other more urgent assignments.
 
 The workload wasn't evenly distributed because Janne handled the cluster computing in addition to his own algorithm design. Also the available data had to be analyzed so that the feasibility of the results could be verified. This analysis later became the core of the achieved results. Otherwise there were no problems distributing the work as the algorithms required approximately the same amount of work. We could have spent much more time improving both algorithms, but had to keep the time spent on reasonable levels, keeping the scope of the project in mind.
 
-The overall time usage for Janne was 107.5 hours and 77.5 hours for Eero. These are conservative estimates, as not every task was included in the calculations and some tasks probably took a bit longer than was reported. The time usage can be seen in more detail in Appendix B.
+The overall time usage for Janne was 109 hours and 77.5 hours for Eero. These are conservative estimates, as not every task was included in the calculations and some tasks probably took a bit longer than was reported. The time usage can be seen in more detail in Appendix B.
 
 
 
@@ -222,13 +237,31 @@ Obitko, M., \emph{Introduction to genetic algorithms}, Hochschule f\"ur Technik 
 \newpage
 \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{results2.png}
 \newpage
+\centering
+\begin{table}
+\caption{Comparison of the best generators}
+\centering
+\begin{tabular}{  l  l  l  }
+
+	 & PSO & GA \\ \hline
+	Output power (3MW) & 3.0107 MW & 3.0625 MW \\ 
+	Torque density & 1475489 & 2513175 \\ 
+	Mass & 1.6159e+05 & 1.4712+05 \\ 
+	Efficiency & 0.9891 & 0.9856 \\ 
+	Power factor & 0.9966 & 0.8206 \\ 
+	Cost & 9.0962e+06 & 5.3166e+06 \\ 
+\end{tabular}
+
+\end{table}
+\clearpage
+
 \section{Time management}
 \begin{longtable}{ | l | l | p{10cm} | }
 \hline
 	lectures & 12 & \  \\ \hline
 	\  & \  & \  \\ \hline
-	\textbf{Janne} & \textbf{total} & 95.5 \\ \hline
-	\ & \ total + lectures & 107.5  \\ \hline
+	\textbf{Janne} & \textbf{total} & 97 \\ \hline
+	\ & \ total + lectures & 109  \\ \hline
 	date & time (h) & description \\ \hline
 	20.1.2014 & 2 & Familiarization with the project and exploring different algorithms \\ \hline
 	21.1.2014 & 1 & Checking the Matlab files \\ \hline
@@ -297,6 +330,7 @@ Obitko, M., \emph{Introduction to genetic algorithms}, Hochschule f\"ur Technik 
 	12.5.2014 & 1.5 & Prepare slides \\ \hline
 	12.5.2014 & 0.5 & Run GA, then run it again \\ \hline
 	22.5.2014 & 2.5 & Documentation \\ \hline
+	25.5.2014 & 1.5 & Documentaiton \\ \hline
 	
 
 \end{longtable}
